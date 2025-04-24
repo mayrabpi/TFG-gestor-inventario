@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// filepath: client/src/App.tsx
+import React from "react";
+import ListaProductos from "./componentes/ListaProductos";
+import AddProductForm from "./componentes/AddProductForm";
 
-function App() {
-
+const App: React.FC = () => {
   return (
-    <>
-      <p className="text-red-500 text-5xl">HOLA</p>
-    </>
-  )
-}
+    <div className="p-4">
+      <AddProductForm />
+      <ListaProductos />
+    </div>
+  );
+};
 
-export default App
+export default App;
