@@ -1,11 +1,11 @@
-// filepath: client/src/components/AddProductForm.tsx
+// filepath: client/src/components/AddProductForm.jsx
 import React, { useState } from "react";
 import { addProduct } from "../api";
 
-const AddProductForm: React.FC = () => {
+const AddProductForm = () => {
     const [product, setProduct] = useState({ id: "", name: "", stock: 0 });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         addProduct(product).then(() => {
             alert("Producto añadido");
