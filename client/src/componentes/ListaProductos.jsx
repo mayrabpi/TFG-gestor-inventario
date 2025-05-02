@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../api";
 
-const ListaProductos = () => {
+const ListaProductos = ({ searchTerm }) => {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
@@ -10,35 +10,56 @@ const ListaProductos = () => {
       .catch((err) => console.error("Error al obtener los productos:", err));
   }, []);
 
+  const filteredProducts = productos.filter((producto) => {
+    if (!producto || !producto.name) return false; // Verificar que el producto y su nombre existen
+    if (!searchTerm) return true; // Mostrar todos los productos si no hay término de búsqueda
+    return producto.name.toLowerCase().startsWith(searchTerm.toLowerCase());
+  });
+
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Lista de Productos</h1>
-      <table className="table-auto w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2">Nombre</th>
-            <th className="border border-gray-300 px-4 py-2">Unidades</th>
-            <th className="border border-gray-300 px-4 py-2">Cantidad</th>
-            <th className="border border-gray-300 px-4 py-2">Precio</th>
-            <th className="border border-gray-300 px-4 py-2">Stock Bajo</th>
-            <th className="border border-gray-300 px-4 py-2">Perecedero</th>
-            <th className="border border-gray-300 px-4 py-2">Fecha de Caducidad</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productos.map((producto) => (
-            <tr key={producto.id} className={producto.units <= producto.lowStockThreshold ? "bg-red-100" : ""}>
-              <td className="border border-gray-300 px-4 py-2">{producto.name}</td>
-              <td className="border border-gray-300 px-4 py-2">{producto.units}</td>
-              <td className="border border-gray-300 px-4 py-2">{producto.quantity || "N/A"}</td>
-              <td className="border border-gray-300 px-4 py-2">${producto.price.toFixed(2)}</td>
-              <td className="border border-gray-300 px-4 py-2">{producto.lowStockThreshold}</td>
-              <td className="border border-gray-300 px-4 py-2">{producto.perishable ? "Sí" : "No"}</td>
-              <td className="border border-gray-300 px-4 py-2">{producto.perishable ? producto.expirationDate : "N/A"}</td>
+      <h1 className="mb-4 font-bold text-2xl">Lista de Productos</h1>
+      <div className="overflow-x-auto">
+        <table className="border border-gray-300 w-full border-collapse table-auto">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="px-4 py-2 border border-gray-300">Nombre</th>
+              <th className="px-4 py-2 border border-gray-300">Unidades</th>
+              <th className="px-4 py-2 border border-gray-300">Cantidad</th>
+              <th className="px-4 py-2 border border-gray-300">Precio</th>
+              <th className="px-4 py-2 border border-gray-300">Stock Bajo</th>
+              <th className="px-4 py-2 border border-gray-300">Perecedero</th>
+              <th className="px-4 py-2 border border-gray-300">Fecha de Caducidad</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredProducts.map((producto) => (
+              <tr
+                key={producto.id || producto.name} // Asegurar una clave única
+                className={producto.units <= producto.lowStockThreshold ? "bg-red-100" : ""}
+              >
+                <td className="px-4 py-2 border border-gray-300">{producto.name}</td>
+                <td className="px-4 py-2 border border-gray-300">{producto.units}</td>
+                <td className="px-4 py-2 border border-gray-300">
+                  {producto.quantity || "N/A"}
+                </td>
+                <td className="px-4 py-2 border border-gray-300">
+                  ${producto.price ? producto.price.toFixed(2) : "0.00"}
+                </td>
+                <td className="px-4 py-2 border border-gray-300">
+                  {producto.lowStockThreshold}
+                </td>
+                <td className="px-4 py-2 border border-gray-300">
+                  {producto.perishable ? "Sí" : "No"}
+                </td>
+                <td className="px-4 py-2 border border-gray-300">
+                  {producto.perishable ? producto.expirationDate : "N/A"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

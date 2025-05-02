@@ -1,6 +1,7 @@
 // filepath: client/src/components/AddProductForm.jsx
 import React, { useState } from "react";
 import { addProduct } from "../api";
+import { v4 as uuidv4 } from "uuid";
 
 const AddProductForm = () => {
     const [product, setProduct] = useState({
@@ -15,7 +16,13 @@ const AddProductForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addProduct(product).then(() => {
+        const updatedProduct = {
+            ...product,
+            id: uuidv4(), // Generar un id único
+            price: parseFloat(product.price), // Asegurarse de que el precio sea un número decimal
+            units: parseFloat(product.units), // Asegurarse de que las unidades sean un número decimal
+        };
+        addProduct(updatedProduct).then(() => {
             alert("Producto añadido");
             setProduct({
                 name: "",
@@ -46,8 +53,9 @@ const AddProductForm = () => {
                 <label className="block mb-2">Unidades</label>
                 <input
                     type="number"
+                    step="0.01" // Permitir números decimales
                     value={product.units}
-                    onChange={(e) => setProduct({ ...product, units: parseInt(e.target.value) || 0 })}
+                    onChange={(e) => setProduct({ ...product, units: e.target.value })}
                     className="p-2 border w-full"
                     required
                 />
@@ -65,8 +73,9 @@ const AddProductForm = () => {
                 <label className="block mb-2">Precio</label>
                 <input
                     type="number"
+                    step="0.01" // Permitir números decimales
                     value={product.price}
-                    onChange={(e) => setProduct({ ...product, price: parseFloat(e.target.value) || 0 })}
+                    onChange={(e) => setProduct({ ...product, price: e.target.value })}
                     className="p-2 border w-full"
                     required
                 />

@@ -1,39 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaBars, FaTimes, FaHome, FaBox, FaUndo, FaExclamationTriangle, FaCalendarAlt } from "react-icons/fa";
 
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="h-screen w-64 bg-gray-800 text-white flex flex-col">
-      <h1 className="text-2xl font-bold p-4 border-b border-gray-700">Gestión de Inventario</h1>
-      <nav className="flex-1 p-4">
-        <ul className="space-y-4">
-          <li>
-            <Link to="/" className="hover:text-gray-300">
-              Inicio
-            </Link>
-          </li>
-          <li>
-            <Link to="/productos" className="hover:text-gray-300">
-              Productos
-            </Link>
-          </li>
-          <li>
-            <Link to="/devolucion" className="hover:text-gray-300">
-              Devolución
-            </Link>
-          </li>
-          <li>
-            <Link to="/alertas" className="hover:text-gray-300">
-              Alertas
-            </Link>
-          </li>
-          <li>
-            <Link to="/caducados" className="hover:text-gray-300">
-              Caducados
-            </Link>
-          </li>
-        </ul>
-      </nav>
+    <div>
+      <button
+        onClick={toggleSidebar}
+        className="md:hidden top-4 right-4 z-20 fixed bg-gray-600 p-2 rounded text-white"
+      >
+        {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+      </button>
+      <div
+        className={`${isOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 fixed md:relative z-10 bg-gray-800 text-white w-48 md:w-64 h-screen transition-transform`}
+      >
+        <h1 className="p-4 border-gray-700 border-b font-bold text-2xl">Gestión de Inventario</h1>
+        <nav className="flex-1 p-4">
+          <ul className="space-y-4">
+            <li>
+              <Link to="/" className="flex items-center hover:text-gray-300">
+                <FaHome className="mr-2" /> Inicio
+              </Link>
+            </li>
+            <li>
+              <Link to="/productos" className="flex items-center hover:text-gray-300">
+                <FaBox className="mr-2" /> Productos
+              </Link>
+            </li>
+            <li>
+              <Link to="/devolucion" className="flex items-center hover:text-gray-300">
+                <FaUndo className="mr-2" /> Devolución
+              </Link>
+            </li>
+            <li>
+              <Link to="/alertas" className="flex items-center hover:text-gray-300">
+                <FaExclamationTriangle className="mr-2" /> Alertas
+              </Link>
+            </li>
+            <li>
+              <Link to="/caducados" className="flex items-center hover:text-gray-300">
+                <FaCalendarAlt className="mr-2" /> Caducados
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 };
