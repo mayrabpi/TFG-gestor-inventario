@@ -116,4 +116,8 @@ const RegistrarDevolucion = ({ onCancel, onInventoryUpdate }) => {
     );
 };
 
+RegistrarDevolucion.defaultProps = {
+    onInventoryUpdate: () => console.log("Inventory updated (default handler)."),
+};
+
 export default RegistrarDevolucion;

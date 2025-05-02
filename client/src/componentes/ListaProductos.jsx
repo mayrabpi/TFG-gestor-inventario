@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../api";
+import EditProductForm from "./EditProductForm";
 
 const ListaProductos = ({ searchTerm }) => {
   const [productos, setProductos] = useState([]);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   useEffect(() => {
     getProducts()
@@ -30,6 +32,7 @@ const ListaProductos = ({ searchTerm }) => {
               <th className="px-4 py-2 border border-gray-300">Stock Bajo</th>
               <th className="px-4 py-2 border border-gray-300">Perecedero</th>
               <th className="px-4 py-2 border border-gray-300">Fecha de Caducidad</th>
+              <th className="px-4 py-2 border border-gray-300">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -55,11 +58,28 @@ const ListaProductos = ({ searchTerm }) => {
                 <td className="px-4 py-2 border border-gray-300">
                   {producto.perishable ? producto.expirationDate : "N/A"}
                 </td>
+                <td className="px-4 py-2 border border-gray-300">
+                  <button
+                    onClick={() => setEditingProduct(producto)}
+                    className="bg-blue-500 px-2 py-1 rounded text-white"
+                  >
+                    Editar
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {editingProduct && (
+        <div className="mt-4">
+          <EditProductForm
+            product={editingProduct}
+            onClose={() => setEditingProduct(null)}
+          />
+        </div>
+      )}
     </div>
   );
 };

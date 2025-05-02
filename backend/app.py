@@ -24,7 +24,7 @@ def get_products():
 def add_product():
     data = request.json
     products_collection.insert_one(data)
-    return jsonify({"message": "Product added successfully"}), 201
+    return jsonify({"message": "Productos agregados exitosamente"}), 201
 
 # Configurar el registro
 logging.basicConfig(level=logging.DEBUG)

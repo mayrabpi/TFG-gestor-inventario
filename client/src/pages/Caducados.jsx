@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Caducados = ({ productos = [] }) => {
     console.log("Productos recibidos:", productos);
     const [view, setView] = useState("proximos");
+    const [showForm, setShowForm] = useState(null);
     const navigate = useNavigate();
 
     const today = new Date();
@@ -24,6 +25,10 @@ const Caducados = ({ productos = [] }) => {
         const fechaCaducidad = new Date(producto.expirationDate);
         return fechaCaducidad < today;
     });
+
+    const toggleForm = (productId) => {
+        setShowForm((prev) => (prev === productId ? null : productId));
+    };
 
     return (
         <div>
@@ -82,9 +87,9 @@ const Caducados = ({ productos = [] }) => {
             {view === "caducados" && (
                 <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
                     {caducados.map((producto) => (
-                        <div key={producto.id} className="p-4 border rounded shadow">
-                            <h2 className="text-lg font-bold">{producto.name}</h2>
-                            <span className="text-sm bg-red-200 text-red-800 px-2 py-1 rounded">
+                        <div key={producto.id} className="shadow p-4 border rounded">
+                            <h2 className="font-bold text-lg">{producto.name}</h2>
+                            <span className="bg-red-200 px-2 py-1 rounded text-red-800 text-sm">
                                 Caducado
                             </span>
                             <p>{producto.units} en stock</p>
@@ -95,7 +100,21 @@ const Caducados = ({ productos = [] }) => {
                                     producto.expirationDate = nuevaFecha;
                                 }}
                             />
-                            <RegistrarDevolucion producto={producto} />
+                            <button
+                                onClick={() => toggleForm(producto.id)}
+                                className="bg-blue-500 mt-2 px-4 py-2 rounded text-white"
+                            >
+                                {showForm === producto.id ? "Cerrar Formulario" : "Añadir a Devolución"}
+                            </button>
+                            {showForm === producto.id && (
+                                <RegistrarDevolucion
+                                    producto={producto}
+                                    onCancel={() => toggleForm(producto.id)}
+                                    onInventoryUpdate={() => {
+                                        console.log("Inventory updated from Caducados page.");
+                                    }}
+                                />
+                            )}
                         </div>
                     ))}
                 </div>
