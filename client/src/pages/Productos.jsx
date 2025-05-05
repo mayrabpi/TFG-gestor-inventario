@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ListaProductos from "../componentes/ListaProductos";
 import AddProductForm from "../componentes/AddProductForm";
 import ReponerProductoForm from "../componentes/ReponerProductoForm";
 import { FaPlus, FaBoxes } from "react-icons/fa";
+import { getProducts } from "../api";
 
 const Productos = () => {
     const [showAddForm, setShowAddForm] = useState(false);
     const [showReponerForm, setShowReponerForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [productos, setProductos] = useState([]);
+
+    // Obtener productos desde el backend
+    useEffect(() => {
+        getProducts()
+            .then((response) => setProductos(response.data))
+            .catch((err) => console.error("Error al obtener los productos:", err));
+    }, []);
 
     const toggleAddForm = () => {
         setShowAddForm(!showAddForm);
-        // Si abrimos el form de añadir, cerramos el de reponer
         if (!showAddForm) {
             setShowReponerForm(false);
         }
@@ -19,7 +27,6 @@ const Productos = () => {
 
     const toggleReponerForm = () => {
         setShowReponerForm(!showReponerForm);
-        // Si abrimos el form de reponer, cerramos el de añadir
         if (!showReponerForm) {
             setShowAddForm(false);
         }
@@ -49,14 +56,17 @@ const Productos = () => {
 
             {showAddForm && (
                 <div className="mb-4">
-                    <AddProductForm />
+                    <AddProductForm
+                        productos={productos} // Pasar la lista de productos reales
+                        onClose={toggleAddForm}
+                    />
                 </div>
             )}
 
             {showReponerForm && (
                 <div className="mb-4">
                     <ReponerProductoForm
-                        productos={[]} // Aquí pasarías tus productos reales
+                        productos={productos} // Pasar la lista de productos reales
                         onClose={toggleReponerForm}
                     />
                 </div>

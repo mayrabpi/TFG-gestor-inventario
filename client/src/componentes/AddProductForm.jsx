@@ -1,9 +1,8 @@
-// filepath: client/src/components/AddProductForm.jsx
 import React, { useState } from "react";
 import { addProduct } from "../api";
 import { v4 as uuidv4 } from "uuid";
 
-const AddProductForm = () => {
+const AddProductForm = ({ productos = [], onClose }) => {
   const [product, setProduct] = useState({
     name: "",
     units: 0,
@@ -13,32 +12,48 @@ const AddProductForm = () => {
     perishable: false,
     expirationDate: "",
   });
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validar si el producto ya existe
+    if (productos.some((producto) => producto.name.toLowerCase() === product.name.toLowerCase())) {
+      setError("El producto ya existe en el inventario.");
+      return;
+    }
+
     const updatedProduct = {
       ...product,
       id: uuidv4(), // Generar un id único
       price: parseFloat(product.price), // Asegurarse de que el precio sea un número decimal
       units: parseFloat(product.units), // Asegurarse de que las unidades sean un número decimal
     };
-    addProduct(updatedProduct).then(() => {
-      alert("Producto añadido");
-      setProduct({
-        name: "",
-        units: 0,
-        quantity: 0,
-        price: 0,
-        lowStockThreshold: 0,
-        perishable: false,
-        expirationDate: "",
-      });
-    });
+
+    addProduct(updatedProduct)
+      .then(() => {
+        alert("Producto añadido correctamente");
+        setProduct({
+          name: "",
+          units: 0,
+          quantity: 0,
+          price: 0,
+          lowStockThreshold: 0,
+          perishable: false,
+          expirationDate: "",
+        });
+        setError(""); // Limpiar el mensaje de error
+        onClose(); // Cerrar el formulario
+      })
+      .catch((err) => console.error("Error al añadir el producto:", err));
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-4 border rounded">
       <h2 className="mb-4 font-bold text-xl">Añadir Producto</h2>
+
+      {error && <p className="mb-4 text-red-500">{error}</p>}
+
       <div className="mb-4">
         <label className="block mb-2">Nombre del Producto</label>
         <input

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReponerProductoForm from "../componentes/ReponerProductoForm";
 import { getProducts } from "../api";
 
 const Inicio = () => {
@@ -8,7 +7,6 @@ const Inicio = () => {
     const [alertasStock, setAlertasStock] = useState(0);
     const [productosCaducados, setProductosCaducados] = useState(0);
     const [valorInventario, setValorInventario] = useState(0);
-    const [showReponerForm, setShowReponerForm] = useState(false);
 
     useEffect(() => {
         getProducts()
@@ -52,7 +50,6 @@ const Inicio = () => {
                     <p className="text-2xl">€{valorInventario}</p>
                 </div>
             </div>
-
         </div>
     );
 };

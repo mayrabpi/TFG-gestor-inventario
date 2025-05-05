@@ -1,17 +1,49 @@
 import React, { useState } from "react";
+import { updateProduct } from "../api";
 
 const ReponerProductoForm = ({ productos, onClose }) => {
-    const [selectedProduct, setSelectedProduct] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const [cantidad, setCantidad] = useState("");
     const [fechaCaducidad, setFechaCaducidad] = useState("");
 
+    const handleSearch = (e) => {
+        const term = e.target.value.toLowerCase();
+        setSearchTerm(term);
+        const filtered = productos.filter((producto) =>
+            producto.name.toLowerCase().includes(term)
+        );
+        setFilteredProducts(filtered);
+    };
+
+    const handleSelectProduct = (producto) => {
+        setSelectedProduct(producto);
+        setSearchTerm(producto.name);
+        setFilteredProducts([]);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Aquí se manejaría la lógica para reponer el producto
-        console.log("Producto a reponer:", selectedProduct);
-        console.log("Cantidad:", cantidad);
-        console.log("Fecha de caducidad:", fechaCaducidad);
-        onClose();
+        if (!selectedProduct) {
+            alert("Por favor, selecciona un producto válido.");
+            return;
+        }
+
+        const updatedData = {
+            units: selectedProduct.units + Number(cantidad), // Convertir cantidad a número
+        };
+
+        if (fechaCaducidad) {
+            updatedData.expirationDate = fechaCaducidad;
+        }
+
+        updateProduct(selectedProduct.id, updatedData)
+            .then(() => {
+                alert("Producto repuesto correctamente");
+                onClose();
+            })
+            .catch((err) => console.error("Error al reponer el producto:", err));
     };
 
     return (
@@ -20,20 +52,36 @@ const ReponerProductoForm = ({ productos, onClose }) => {
 
             <label className="block mb-2">
                 Producto:
-                <select
-                    value={selectedProduct}
-                    onChange={(e) => setSelectedProduct(e.target.value)}
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleSearch}
                     className="block px-2 py-1 border rounded w-full"
+                    placeholder="Escribe para buscar un producto"
                     required
-                >
-                    <option value="">Seleccione un producto</option>
-                    {productos.map((producto) => (
-                        <option key={producto.id} value={producto.id}>
-                            {producto.nombre}
-                        </option>
-                    ))}
-                </select>
+                />
+                {filteredProducts.length > 0 && (
+                    <ul className="bg-white mt-2 border rounded max-h-40 overflow-y-auto">
+                        {filteredProducts.map((producto) => (
+                            <li
+                                key={producto.id}
+                                onClick={() => handleSelectProduct(producto)}
+                                className="hover:bg-gray-200 px-2 py-1 cursor-pointer"
+                            >
+                                {producto.name}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </label>
+
+            {selectedProduct && (
+                <div className="mb-4">
+                    <p className="text-gray-600 text-sm">
+                        Producto seleccionado: <strong>{selectedProduct.name}</strong>
+                    </p>
+                </div>
+            )}
 
             <label className="block mb-2">
                 Cantidad:
