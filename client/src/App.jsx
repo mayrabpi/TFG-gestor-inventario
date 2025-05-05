@@ -6,6 +6,7 @@ import Productos from "./pages/Productos";
 import Devolucion from "./pages/Devolucion";
 import Alertas from "./pages/Alertas";
 import Caducados from "./pages/Caducados";
+import Proveedores from "./pages/Proveedores";
 import { getProducts } from "./api";
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/devolucion" element={<Devolucion />} />
             <Route path="/alertas" element={<Alertas />} />
             <Route path="/caducados" element={<Caducados productos={productos} />} />
+            <Route path="/proveedores" element={<Proveedores />} />
           </Routes>
         </div>
       </div>

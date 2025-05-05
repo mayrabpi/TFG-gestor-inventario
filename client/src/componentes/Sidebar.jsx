@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes, FaHome, FaBox, FaUndo, FaExclamationTriangle, FaCalendarAlt } from "react-icons/fa";
+import { FaBars, FaTimes, FaHome, FaBox, FaUndo, FaExclamationTriangle, FaCalendarAlt, FaTruck } from "react-icons/fa";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,9 +13,9 @@ const Sidebar = () => {
     <div>
       <button
         onClick={toggleSidebar}
-        className="md:hidden top-4 right-4 z-20 fixed bg-gray-600 p-2 rounded text-white"
+        className="md:hidden top-4 right-4 z-20 fixed bg-blue-500 p-2 rounded text-white"
       >
-        {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+        {isOpen ? "Cerrar" : "Menú"}
       </button>
       <div
         className={`${isOpen ? "translate-x-0" : "-translate-x-full"
@@ -47,6 +47,11 @@ const Sidebar = () => {
             <li>
               <Link to="/caducados" className="flex items-center hover:text-gray-300">
                 <FaCalendarAlt className="mr-2" /> Caducados
+              </Link>
+            </li>
+            <li>
+              <Link to="/proveedores" className="flex items-center hover:text-gray-300">
+                <FaTruck className="mr-2" /> Proveedores
               </Link>
             </li>
           </ul>

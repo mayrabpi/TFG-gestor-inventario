@@ -8,4 +8,10 @@ export const addProduct = (product) => API.post("/products", product);
 export const updateProduct = (id, product) => API.put(`/products/${id}`, product);
 export const deleteProduct = (id) => API.delete(`/products/${id}`);
 
+// Rutas para proveedores
+export const getProviders = () => API.get("/providers");
+export const addProvider = (provider) => API.post("/providers", provider);
+export const updateProvider = (id, provider) => API.put(`/providers/${id}`, provider);
+export const deleteProvider = (id) => API.delete(`/providers/${id}`);
+
 export default API;
