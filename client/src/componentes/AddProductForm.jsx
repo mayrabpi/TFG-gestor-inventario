@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { addProduct } from "../api";
+import React, { useState, useEffect } from "react";
+import { addProduct, getProviders } from "../api"; // Asegúrate de tener una función para obtener proveedores
 import { v4 as uuidv4 } from "uuid";
 
-const AddProductForm = ({ productos = [], onClose }) => {
+const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
   const [product, setProduct] = useState({
     name: "",
     units: 0,
@@ -11,8 +11,17 @@ const AddProductForm = ({ productos = [], onClose }) => {
     lowStockThreshold: 0,
     perishable: false,
     expirationDate: "",
+    providerId: "", // Nuevo campo para el proveedor
   });
   const [error, setError] = useState("");
+  const [providers, setProviders] = useState([]); // Estado para almacenar los proveedores
+
+  useEffect(() => {
+    // Cargar la lista de proveedores al montar el componente
+    getProviders()
+      .then((response) => setProviders(response.data))
+      .catch((err) => console.error("Error al obtener los proveedores:", err));
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,9 +34,9 @@ const AddProductForm = ({ productos = [], onClose }) => {
 
     const updatedProduct = {
       ...product,
-      id: uuidv4(), // Generar un id único
-      price: parseFloat(product.price), // Asegurarse de que el precio sea un número decimal
-      units: parseFloat(product.units), // Asegurarse de que las unidades sean un número decimal
+      id: uuidv4(),
+      price: parseFloat(product.price),
+      units: parseFloat(product.units),
     };
 
     addProduct(updatedProduct)
@@ -41,9 +50,11 @@ const AddProductForm = ({ productos = [], onClose }) => {
           lowStockThreshold: 0,
           perishable: false,
           expirationDate: "",
+          providerId: "",
         });
-        setError(""); // Limpiar el mensaje de error
-        onClose(); // Cerrar el formulario
+        setError("");
+        onClose();
+        if (onProductAdded) onProductAdded();
       })
       .catch((err) => console.error("Error al añadir el producto:", err));
   };
@@ -68,7 +79,7 @@ const AddProductForm = ({ productos = [], onClose }) => {
         <label className="block mb-2">Unidades</label>
         <input
           type="number"
-          step="0.01" // Permitir números decimales
+          step="0.01"
           value={product.units}
           onChange={(e) => setProduct({ ...product, units: e.target.value })}
           className="p-2 border w-full"
@@ -79,6 +90,7 @@ const AddProductForm = ({ productos = [], onClose }) => {
         <label className="block mb-2">Cantidad (en kilos)</label>
         <input
           type="number"
+          step="0.01"
           value={product.quantity}
           onChange={(e) => setProduct({ ...product, quantity: parseFloat(e.target.value) || 0 })}
           className="p-2 border w-full"
@@ -88,7 +100,7 @@ const AddProductForm = ({ productos = [], onClose }) => {
         <label className="block mb-2">Precio</label>
         <input
           type="number"
-          step="0.01" // Permitir números decimales
+          step="0.01"
           value={product.price}
           onChange={(e) => setProduct({ ...product, price: e.target.value })}
           className="p-2 border w-full"
@@ -127,9 +139,33 @@ const AddProductForm = ({ productos = [], onClose }) => {
           />
         </div>
       )}
-      <button type="submit" className="bg-blue-500 px-4 py-2 rounded text-white">
-        Añadir Producto
-      </button>
+      <div className="mb-4">
+        <label className="block mb-2">Proveedor (opcional)</label>
+        <select
+          value={product.providerId}
+          onChange={(e) => setProduct({ ...product, providerId: e.target.value })}
+          className="p-2 border w-full"
+        >
+          <option value="">Seleccionar proveedor</option>
+          {providers.map((provider) => (
+            <option key={provider.id} value={provider.id}>
+              {provider.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="flex justify-end gap-2">
+        <button
+          type="button"
+          onClick={onClose}
+          className="bg-gray-500 px-4 py-2 rounded text-white"
+        >
+          Cancelar
+        </button>
+        <button type="submit" className="bg-blue-500 px-4 py-2 rounded text-white">
+          Añadir Producto
+        </button>
+      </div>
     </form>
   );
 };

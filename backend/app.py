@@ -3,6 +3,8 @@ from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import logging
+import smtplib
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 CORS(app)  # Permite que el frontend (React) se comunique con el backend
@@ -99,6 +101,40 @@ def delete_provider(provider_id):
 
     logging.info(f"Proveedor con id {provider_id} eliminado correctamente.")
     return jsonify({"message": "Provider deleted successfully"})
+
+# Ruta para obtener productos por proveedor
+@app.route("/providers/<string:provider_id>/products", methods=["GET"])
+def get_products_by_provider(provider_id):
+    products = list(products_collection.find({"providerId": provider_id}, {"_id": 0, "id": 1, "name": 1, "units": 1, "quantity": 1, "price": 1, "lowStockThreshold": 1, "perishable": 1, "expirationDate": 1}))
+    logging.debug(f"Productos enviados para el proveedor {provider_id}: {products}")
+    return jsonify(products)
+
+
+@app.route("/api/send-order", methods=["POST"])
+def send_order():
+    try:
+        data = request.json
+        provider_email = data.get("providerEmail")
+        products = data.get("products")
+
+        # Validar datos
+        if not provider_email or not products:
+            logging.error("Datos incompletos: providerEmail o products faltan")
+            return jsonify({"error": "Faltan datos para procesar el pedido"}), 400
+
+        # Crear el contenido del pedido
+        product_list = [{"name": p["name"], "quantity": p["quantity"]} for p in products]
+        pedido = {
+            "providerEmail": provider_email,
+            "products": product_list,
+        }
+
+        logging.info("Pedido generado correctamente")
+        return jsonify({"message": "Pedido generado correctamente", "pedido": pedido}), 200
+
+    except Exception as e:
+        logging.error(f"Error inesperado: {e}")
+        return jsonify({"error": "Error inesperado en el servidor"}), 500
 
 # -------------------- Ruta para corregir IDs de productos --------------------
 

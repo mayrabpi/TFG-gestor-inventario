@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getProviders, addProvider, updateProvider, deleteProvider } from "../api";
+import { getProviders, getProductsByProvider, addProvider, updateProvider, deleteProvider } from "../api";
 import RegistroProveedorForm from "../componentes/RegistroProveedorForm";
+import ListaProductos from "../componentes/ListaProductos";
 
 const Proveedores = () => {
     const [proveedores, setProveedores] = useState([]);
@@ -12,6 +13,12 @@ const Proveedores = () => {
         phone: "",
         email: "",
     });
+    const [selectedProvider, setSelectedProvider] = useState(null); // Proveedor seleccionado
+    const [productos, setProductos] = useState([]); // Productos del proveedor seleccionado
+    const [showProductsModal, setShowProductsModal] = useState(false); // Controlar el modal
+    const [showOrderForm, setShowOrderForm] = useState(false); // Controlar el formulario de pedido
+    const [selectedProducts, setSelectedProducts] = useState([]); // Productos seleccionados para el pedido
+    const [pedidoGenerado, setPedidoGenerado] = useState(null); // Pedido generado para mostrar en el modal
 
     useEffect(() => {
         fetchProviders();
@@ -25,7 +32,6 @@ const Proveedores = () => {
 
     const handleFormSubmit = (data) => {
         if (data.id) {
-            // Actualizar proveedor
             updateProvider(data.id, data)
                 .then(() => {
                     alert("Proveedor actualizado correctamente");
@@ -34,7 +40,6 @@ const Proveedores = () => {
                 })
                 .catch((err) => console.error("Error al actualizar el proveedor:", err));
         } else {
-            // Agregar proveedor
             addProvider(data)
                 .then(() => {
                     alert("Proveedor registrado correctamente");
@@ -64,6 +69,38 @@ const Proveedores = () => {
     const handleAdd = () => {
         setFormData({ id: null, name: "", address: "", phone: "", email: "" });
         setShowForm(true);
+    };
+
+    const handleShowProducts = (provider) => {
+        setSelectedProvider(provider);
+        getProductsByProvider(provider.id)
+            .then((response) => {
+                setProductos(response.data);
+                setShowProductsModal(true);
+            })
+            .catch((err) => console.error("Error al obtener los productos del proveedor:", err));
+    };
+
+    const handleCloseModal = () => {
+        setShowProductsModal(false);
+        setSelectedProvider(null);
+        setProductos([]);
+    };
+
+    const handleMakeOrder = () => {
+        setSelectedProducts(productos.map((product) => ({ ...product, quantity: 0 }))); // Inicializar cantidades
+        setShowOrderForm(true);
+    };
+
+    const handleOrderSubmit = () => {
+        const orderDetails = {
+            providerEmail: selectedProvider.email,
+            products: selectedProducts.filter((product) => product.quantity > 0), // Solo productos con cantidad > 0
+        };
+
+        // Simular la generación del pedido y mostrarlo en un modal
+        setPedidoGenerado(orderDetails);
+        setShowOrderForm(false);
     };
 
     return (
@@ -103,9 +140,15 @@ const Proveedores = () => {
                                     </button>
                                     <button
                                         onClick={() => handleDelete(proveedor.id)}
-                                        className="bg-red-500 px-2 py-1 rounded text-white"
+                                        className="bg-red-500 mr-2 px-2 py-1 rounded text-white"
                                     >
                                         Eliminar
+                                    </button>
+                                    <button
+                                        onClick={() => handleShowProducts(proveedor)}
+                                        className="bg-blue-500 px-2 py-1 rounded text-white"
+                                    >
+                                        Ver Productos
                                     </button>
                                 </td>
                             </tr>
@@ -120,6 +163,98 @@ const Proveedores = () => {
                     onClose={() => setShowForm(false)}
                     onSubmit={handleFormSubmit}
                 />
+            )}
+
+            {/* Modal para mostrar productos */}
+            {showProductsModal && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-96">
+                        <h2 className="mb-4 font-bold text-xl">
+                            Productos de {selectedProvider?.name}
+                        </h2>
+                        {productos.length > 0 ? (
+                            <ListaProductos productos={productos} searchTerm="" onEdit={() => { }} onDelete={() => { }} />
+                        ) : (
+                            <p>No hay productos asociados a este proveedor.</p>
+                        )}
+                        <div className="flex justify-between mt-4">
+                            <button
+                                onClick={handleMakeOrder}
+                                className="bg-green-500 px-4 py-2 rounded text-white"
+                            >
+                                Hacer Pedido
+                            </button>
+                            <button
+                                onClick={handleCloseModal}
+                                className="bg-gray-500 px-4 py-2 rounded text-white"
+                            >
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Formulario para confirmar pedido */}
+            {showOrderForm && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-96">
+                        <h2 className="mb-4 font-bold text-xl">Confirmar Pedido</h2>
+                        {selectedProducts.map((product, index) => (
+                            <div key={product.id} className="mb-4">
+                                <label className="block mb-2">{product.name}</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={product.quantity}
+                                    onChange={(e) => {
+                                        const updatedProducts = [...selectedProducts];
+                                        updatedProducts[index].quantity = parseInt(e.target.value, 10) || 0;
+                                        setSelectedProducts(updatedProducts);
+                                    }}
+                                    className="p-2 border w-full"
+                                />
+                            </div>
+                        ))}
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={() => setShowOrderForm(false)}
+                                className="bg-gray-500 px-4 py-2 rounded text-white"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={handleOrderSubmit}
+                                className="bg-blue-500 px-4 py-2 rounded text-white"
+                            >
+                                Generar Pedido
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal para mostrar el pedido generado */}
+            {pedidoGenerado && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-96">
+                        <h2 className="mb-4 font-bold text-xl">Pedido Generado</h2>
+                        <p><strong>Proveedor:</strong> {pedidoGenerado.providerEmail}</p>
+                        <ul>
+                            {pedidoGenerado.products.map((product, index) => (
+                                <li key={index}>{product.name}: {product.quantity}</li>
+                            ))}
+                        </ul>
+                        <div className="flex justify-end mt-4">
+                            <button
+                                onClick={() => setPedidoGenerado(null)}
+                                className="bg-gray-500 px-4 py-2 rounded text-white"
+                            >
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

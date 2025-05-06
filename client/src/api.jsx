@@ -13,5 +13,7 @@ export const getProviders = () => API.get("/providers");
 export const addProvider = (provider) => API.post("/providers", provider);
 export const updateProvider = (id, provider) => API.put(`/providers/${id}`, provider);
 export const deleteProvider = (id) => API.delete(`/providers/${id}`);
+export const getProductsByProvider = (providerId) => API.get(`/providers/${providerId}/products`);
+
 
 export default API;

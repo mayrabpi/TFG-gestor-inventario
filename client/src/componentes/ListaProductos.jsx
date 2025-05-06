@@ -1,69 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { getProducts } from "../api";
-import EditProductForm from "./EditProductForm";
+import React, { useState } from "react";
 
-const ListaProductos = ({ searchTerm }) => {
-  const [productos, setProductos] = useState([]);
-  const [editingProduct, setEditingProduct] = useState(null);
+const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10; // Número de productos por página
 
-  useEffect(() => {
-    getProducts()
-      .then((response) => setProductos(response.data))
-      .catch((err) => console.error("Error al obtener los productos:", err));
-  }, []);
-
+  // Filtrar productos según el término de búsqueda
   const filteredProducts = productos.filter((producto) => {
-    if (!producto || !producto.name) return false; // Verificar que el producto y su nombre existen
-    if (!searchTerm) return true; // Mostrar todos los productos si no hay término de búsqueda
+    if (!producto || !producto.name) return false;
+    if (!searchTerm) return true;
     return producto.name.toLowerCase().startsWith(searchTerm.toLowerCase());
   });
+
+  // Calcular los productos a mostrar en la página actual
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Cambiar de página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
       <h1 className="mb-4 font-bold text-2xl">Lista de Productos</h1>
-      <div className="overflow-x-auto">
-        <table className="border border-gray-300 w-full border-collapse table-auto">
+      {/* Aplicar barra de desplazamiento horizontal solo en pantallas pequeñas */}
+      <div className="sm:overflow-x-auto">
+        <table className="border border-gray-300 w-full text-sm sm:text-base border-collapse table-auto">
           <thead>
             <tr className="bg-gray-200">
-              <th className="px-4 py-2 border border-gray-300">Nombre</th>
-              <th className="px-4 py-2 border border-gray-300">Unidades</th>
-              <th className="px-4 py-2 border border-gray-300">Cantidad</th>
-              <th className="px-4 py-2 border border-gray-300">Precio</th>
-              <th className="px-4 py-2 border border-gray-300">Stock Bajo</th>
-              <th className="px-4 py-2 border border-gray-300">Perecedero</th>
-              <th className="px-4 py-2 border border-gray-300">Fecha de Caducidad</th>
-              <th className="px-4 py-2 border border-gray-300">Acciones</th>
+              <th className="px-2 sm:px-4 py-2 border border-gray-300">Nombre</th>
+              <th className="px-2 sm:px-4 py-2 border border-gray-300">Unidades</th>
+              <th className="px-2 sm:px-4 py-2 border border-gray-300">Cantidad</th>
+              <th className="px-2 sm:px-4 py-2 border border-gray-300">Precio</th>
+              <th className="px-2 sm:px-4 py-2 border border-gray-300">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((producto) => (
-              <tr
-                key={producto.id || producto.name} // Asegurar una clave única
-                className={producto.units <= producto.lowStockThreshold ? "bg-red-100" : ""}
-              >
-                <td className="px-4 py-2 border border-gray-300">{producto.name}</td>
-                <td className="px-4 py-2 border border-gray-300">{producto.units}</td>
-                <td className="px-4 py-2 border border-gray-300">
+            {currentProducts.map((producto) => (
+              <tr key={producto.id || producto.name}>
+                <td className="px-2 sm:px-4 py-2 border border-gray-300">{producto.name}</td>
+                <td className="px-2 sm:px-4 py-2 border border-gray-300">{producto.units}</td>
+                <td className="px-2 sm:px-4 py-2 border border-gray-300">
                   {producto.quantity || "N/A"}
                 </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  ${producto.price ? producto.price.toFixed(2) : "0.00"}
+                <td className="px-2 sm:px-4 py-2 border border-gray-300">
+                  €{typeof producto.price === "number" ? producto.price.toFixed(2) : "0.00"}
                 </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {producto.lowStockThreshold}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {producto.perishable ? "Sí" : "No"}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {producto.perishable ? producto.expirationDate : "N/A"}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
+                <td className="px-2 sm:px-4 py-2 border border-gray-300">
                   <button
-                    onClick={() => setEditingProduct(producto)}
-                    className="bg-blue-500 px-2 py-1 rounded text-white"
+                    onClick={() => onEdit(producto)}
+                    className="bg-yellow-500 mr-2 px-2 py-1 rounded text-white text-xs sm:text-sm"
                   >
                     Editar
+                  </button>
+                  <button
+                    onClick={() => onDelete(producto.id)}
+                    className="bg-red-500 px-2 py-1 rounded text-white text-xs sm:text-sm"
+                  >
+                    Eliminar
                   </button>
                 </td>
               </tr>
@@ -72,14 +65,22 @@ const ListaProductos = ({ searchTerm }) => {
         </table>
       </div>
 
-      {editingProduct && (
-        <div className="mt-4">
-          <EditProductForm
-            product={editingProduct}
-            onClose={() => setEditingProduct(null)}
-          />
-        </div>
-      )}
+      {/* Paginación */}
+      <div className="flex justify-center mt-4">
+        {Array.from(
+          { length: Math.ceil(filteredProducts.length / productsPerPage) },
+          (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => paginate(index + 1)}
+              className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+                }`}
+            >
+              {index + 1}
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 };
