@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { FaEdit, FaTrash } from 'react-icons/fa';
+
+
 
 const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +26,7 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
     <div>
       <h1 className="mb-4 font-bold text-2xl">Lista de Productos</h1>
       {/* Aplicar barra de desplazamiento horizontal solo en pantallas pequeñas */}
-      <div className="sm:overflow-x-auto">
+      <div className="flex sm:overflow-x-auto">
         <table className="border border-gray-300 w-full text-sm sm:text-base border-collapse table-auto">
           <thead>
             <tr className="bg-gray-200">
@@ -46,19 +49,37 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
                   €{typeof producto.price === "number" ? producto.price.toFixed(2) : "0.00"}
                 </td>
                 <td className="px-2 sm:px-4 py-2 border border-gray-300">
-                  <button
-                    onClick={() => onEdit(producto)}
-                    className="bg-yellow-500 mr-2 px-2 py-1 rounded text-white text-xs sm:text-sm"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => onDelete(producto.id)}
-                    className="bg-red-500 px-2 py-1 rounded text-white text-xs sm:text-sm"
-                  >
-                    Eliminar
-                  </button>
+                  <div className="flex space-x-2">
+
+                    {/* Botón Editar con tooltip */}
+                    <div className="group relative">
+                      <button
+                        onClick={() => onEdit(producto)}
+                        className="flex items-center bg-yellow-400 px-2 py-1 rounded text-white text-xs sm:text-sm"
+                      >
+                        <FaEdit className="text-lg" />
+                      </button>
+                      <div className="bottom-full left-1/2 z-10 absolute bg-black opacity-0 group-hover:opacity-100 mb-1 px-2 py-1 rounded text-white text-xs whitespace-nowrap transition -translate-x-1/2">
+                        Editar producto
+                      </div>
+                    </div>
+
+                    {/* Botón Eliminar con tooltip */}
+                    <div className="group relative">
+                      <button
+                        onClick={() => onDelete(producto.id)}
+                        className="flex items-center bg-red-400 px-2 py-1 rounded text-white text-xs sm:text-sm"
+                      >
+                        <FaTrash className="text-lg" />
+                      </button>
+                      <div className="bottom-full left-1/2 z-10 absolute bg-black opacity-0 group-hover:opacity-100 mb-1 px-2 py-1 rounded text-white text-xs whitespace-nowrap transition -translate-x-1/2">
+                        Eliminar producto
+                      </div>
+                    </div>
+
+                  </div>
                 </td>
+
               </tr>
             ))}
           </tbody>
@@ -73,7 +94,7 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
             <button
               key={index + 1}
               onClick={() => paginate(index + 1)}
-              className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-gray-300"
+              className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? "bg-gray-400 text-white" : "bg-gray-300"
                 }`}
             >
               {index + 1}

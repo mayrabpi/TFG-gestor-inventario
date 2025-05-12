@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes, FaHome, FaBox, FaUndo, FaExclamationTriangle, FaCalendarAlt, FaTruck } from "react-icons/fa";
+import { FaBell, FaTimes, FaTachometerAlt, FaHome, FaBox, FaUndo, FaExclamationTriangle, FaCalendarAlt, FaTruck } from "react-icons/fa";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,9 +24,16 @@ const Sidebar = () => {
         <h1 className="p-4 border-gray-700 border-b font-bold text-2xl">Gestión de Inventario</h1>
         <nav className="flex-1 p-4">
           <ul className="space-y-4">
+            {/* Enlace a la página Home */}
             <li>
               <Link to="/" className="flex items-center hover:text-gray-300">
-                <FaHome className="mr-2" /> Inicio
+                <FaHome className="mr-2" /> Home
+              </Link>
+            </li>
+            {/* Enlace al Panel de Control (Inicio) */}
+            <li>
+              <Link to="/inicio" className="flex items-center hover:text-gray-300">
+                <FaTachometerAlt className="mr-2" /> Panel de Control
               </Link>
             </li>
             <li>
@@ -41,7 +48,7 @@ const Sidebar = () => {
             </li>
             <li>
               <Link to="/alertas" className="flex items-center hover:text-gray-300">
-                <FaExclamationTriangle className="mr-2" /> Alertas
+                < FaBell className="mr-2" /> Alertas
               </Link>
             </li>
             <li>

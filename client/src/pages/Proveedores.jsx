@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getProviders, getProductsByProvider, addProvider, updateProvider, deleteProvider } from "../api";
 import RegistroProveedorForm from "../componentes/RegistroProveedorForm";
 import ListaProductos from "../componentes/ListaProductos";
+import { FaEdit, FaTrash, FaEye, FaPlus } from 'react-icons/fa';
 
 const Proveedores = () => {
     const [proveedores, setProveedores] = useState([]);
@@ -108,8 +109,9 @@ const Proveedores = () => {
             <h1 className="mb-4 font-bold text-3xl">Gestión de Proveedores</h1>
             <button
                 onClick={handleAdd}
-                className="bg-blue-500 mb-4 px-4 py-2 rounded text-white"
+                className="flex items-center gap-2 bg-gray-600 mb-4 px-4 py-2 rounded text-white"
             >
+                <FaPlus />
                 Registrar Proveedor
             </button>
 
@@ -132,24 +134,48 @@ const Proveedores = () => {
                                 <td className="px-4 py-2 border border-gray-300">{proveedor.phone}</td>
                                 <td className="px-4 py-2 border border-gray-300">{proveedor.email || "N/A"}</td>
                                 <td className="px-4 py-2 border border-gray-300">
-                                    <button
-                                        onClick={() => handleEdit(proveedor)}
-                                        className="bg-yellow-500 mr-2 px-2 py-1 rounded text-white"
-                                    >
-                                        Modificar
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(proveedor.id)}
-                                        className="bg-red-500 mr-2 px-2 py-1 rounded text-white"
-                                    >
-                                        Eliminar
-                                    </button>
-                                    <button
-                                        onClick={() => handleShowProducts(proveedor)}
-                                        className="bg-blue-500 px-2 py-1 rounded text-white"
-                                    >
-                                        Ver Productos
-                                    </button>
+                                    <div className="flex space-x-2">
+
+                                        {/* Botón Editar */}
+                                        <div className="group relative">
+                                            <button
+                                                onClick={() => handleEdit(proveedor)}
+                                                className="bg-yellow-400 px-2 py-1 rounded text-white"
+                                            >
+                                                <FaEdit />
+                                            </button>
+                                            <div className="bottom-full left-1/2 z-10 absolute bg-black opacity-0 group-hover:opacity-100 mb-1 px-2 py-1 rounded text-white text-xs whitespace-nowrap transition -translate-x-1/2">
+                                                Editar proveedor
+                                            </div>
+                                        </div>
+
+                                        {/* Botón Eliminar */}
+                                        <div className="group relative">
+                                            <button
+                                                onClick={() => handleDelete(proveedor.id)}
+                                                className="bg-red-400 px-2 py-1 rounded text-white"
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                            <div className="bottom-full left-1/2 z-10 absolute bg-black opacity-0 group-hover:opacity-100 mb-1 px-2 py-1 rounded text-white text-xs whitespace-nowrap transition -translate-x-1/2">
+                                                Eliminar proveedor
+                                            </div>
+                                        </div>
+
+                                        {/* Botón Ver Productos */}
+                                        <div className="group relative">
+                                            <button
+                                                onClick={() => handleShowProducts(proveedor)}
+                                                className="bg-blue-400 px-2 py-1 rounded text-white"
+                                            >
+                                                <FaEye />
+                                            </button>
+                                            <div className="bottom-full left-1/2 z-10 absolute bg-black opacity-0 group-hover:opacity-100 mb-1 px-2 py-1 rounded text-white text-xs whitespace-nowrap transition -translate-x-1/2">
+                                                Ver productos
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </td>
                             </tr>
                         ))}
