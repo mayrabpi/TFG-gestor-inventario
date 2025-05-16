@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { addProduct, getProviders } from "../api"; // Asegúrate de tener una función para obtener proveedores
-import { v4 as uuidv4 } from "uuid";
+//import { v4 as uuidv4 } from "uuid";
 
 const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
   const [product, setProduct] = useState({
+    id: "",
     name: "",
     units: 0,
-    quantity: 0,
+    // quantity: 0,
     price: 0,
     lowStockThreshold: 0,
     perishable: false,
@@ -27,14 +28,14 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
     e.preventDefault();
 
     // Validar si el producto ya existe
-    if (productos.some((producto) => producto.name.toLowerCase() === product.name.toLowerCase())) {
-      setError("El producto ya existe en el inventario.");
+    if (productos.some((producto) => producto.id === product.id)) {
+      setError("El código de barras ya está registrado para otro producto.");
       return;
     }
 
     const updatedProduct = {
       ...product,
-      id: uuidv4(),
+      id: product.id,
       price: parseFloat(product.price),
       units: parseFloat(product.units),
     };
@@ -43,9 +44,10 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
       .then(() => {
         alert("Producto añadido correctamente");
         setProduct({
+          id: "",
           name: "",
           units: 0,
-          quantity: 0,
+          //quantity: 0,
           price: 0,
           lowStockThreshold: 0,
           perishable: false,
@@ -66,6 +68,15 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
       {error && <p className="mb-4 text-red-500">{error}</p>}
 
       <div className="mb-4">
+        <label className="block mb-2">Código de barras</label>
+        <input
+          type="text"
+          value={product.id}
+          onChange={(e) => setProduct({ ...product, id: e.target.value })}
+          className="p-2 border w-full"
+          placeholder="Escanea o introduce el código de barras"
+          required
+        />
         <label className="block mb-2">Nombre del Producto</label>
         <input
           type="text"
@@ -86,16 +97,7 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
           required
         />
       </div>
-      <div className="mb-4">
-        <label className="block mb-2">Cantidad (en kilos)</label>
-        <input
-          type="number"
-          step="0.01"
-          value={product.quantity}
-          onChange={(e) => setProduct({ ...product, quantity: parseFloat(e.target.value) || 0 })}
-          className="p-2 border w-full"
-        />
-      </div>
+
       <div className="mb-4">
         <label className="block mb-2">Precio</label>
         <input

@@ -1,37 +1,29 @@
 import React, { useState } from "react";
-import { updateProduct } from "../api";
+import { updateProduct } from "../api"; // Quita addStock
 
-const ReponerProductoForm = ({ productos, onClose }) => {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filteredProducts, setFilteredProducts] = useState([]);
+const ReponerProductoForm = ({ productos, onClose, onReponer }) => {
+    const [codigoBarras, setCodigoBarras] = useState("");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [cantidad, setCantidad] = useState("");
     const [fechaCaducidad, setFechaCaducidad] = useState("");
+    const [error, setError] = useState("");
 
     const handleSearch = (e) => {
-        const term = e.target.value.toLowerCase();
-        setSearchTerm(term);
-        const filtered = productos.filter((producto) =>
-            producto.name.toLowerCase().includes(term)
-        );
-        setFilteredProducts(filtered);
-    };
-
-    const handleSelectProduct = (producto) => {
-        setSelectedProduct(producto);
-        setSearchTerm(producto.name);
-        setFilteredProducts([]);
+        const codigo = e.target.value.trim();
+        setCodigoBarras(codigo);
+        const encontrado = productos.find((p) => p.id === codigo);
+        setSelectedProduct(encontrado || null);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!selectedProduct) {
-            alert("Por favor, selecciona un producto válido.");
+            alert("Por favor, escanea o introduce un código de barras válido.");
             return;
         }
 
         const updatedData = {
-            units: selectedProduct.units + Number(cantidad), // Convertir cantidad a número
+            units: selectedProduct.units + Number(cantidad),
         };
 
         if (fechaCaducidad) {
@@ -41,9 +33,9 @@ const ReponerProductoForm = ({ productos, onClose }) => {
         updateProduct(selectedProduct.id, updatedData)
             .then(() => {
                 alert("Producto repuesto correctamente");
-                onClose();
+                if (onReponer) onReponer();
             })
-            .catch((err) => console.error("Error al reponer el producto:", err));
+            .catch((err) => setError("Error al reponer el producto"));
     };
 
     return (
@@ -51,28 +43,15 @@ const ReponerProductoForm = ({ productos, onClose }) => {
             <h2 className="mb-4 font-bold text-xl">Reponer Producto</h2>
 
             <label className="block mb-2">
-                Producto:
+                Código de Barras:
                 <input
                     type="text"
-                    value={searchTerm}
+                    value={codigoBarras}
                     onChange={handleSearch}
                     className="block px-2 py-1 border rounded w-full"
-                    placeholder="Escribe para buscar un producto"
+                    placeholder="Escanea o escribe el código"
                     required
                 />
-                {filteredProducts.length > 0 && (
-                    <ul className="bg-white mt-2 border rounded max-h-40 overflow-y-auto">
-                        {filteredProducts.map((producto) => (
-                            <li
-                                key={producto.id}
-                                onClick={() => handleSelectProduct(producto)}
-                                className="hover:bg-gray-200 px-2 py-1 cursor-pointer"
-                            >
-                                {producto.name}
-                            </li>
-                        ))}
-                    </ul>
-                )}
             </label>
 
             {selectedProduct && (
@@ -84,7 +63,7 @@ const ReponerProductoForm = ({ productos, onClose }) => {
             )}
 
             <label className="block mb-2">
-                Cantidad:
+                Cantidad a reponer:
                 <input
                     type="number"
                     value={cantidad}
@@ -103,6 +82,8 @@ const ReponerProductoForm = ({ productos, onClose }) => {
                     className="block px-2 py-1 border rounded w-full"
                 />
             </label>
+
+            {error && <p className="mb-4 text-red-500 text-sm">{error}</p>}
 
             <div className="flex justify-end mt-4">
                 <button

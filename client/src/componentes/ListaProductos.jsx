@@ -32,7 +32,6 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
             <tr className="bg-gray-200">
               <th className="px-2 sm:px-4 py-2 border border-gray-300">Nombre</th>
               <th className="px-2 sm:px-4 py-2 border border-gray-300">Unidades</th>
-              <th className="px-2 sm:px-4 py-2 border border-gray-300">Cantidad</th>
               <th className="px-2 sm:px-4 py-2 border border-gray-300">Precio</th>
               <th className="px-2 sm:px-4 py-2 border border-gray-300">Acciones</th>
             </tr>
@@ -42,9 +41,6 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
               <tr key={producto.id || producto.name}>
                 <td className="px-2 sm:px-4 py-2 border border-gray-300">{producto.name}</td>
                 <td className="px-2 sm:px-4 py-2 border border-gray-300">{producto.units}</td>
-                <td className="px-2 sm:px-4 py-2 border border-gray-300">
-                  {producto.quantity || "N/A"}
-                </td>
                 <td className="px-2 sm:px-4 py-2 border border-gray-300">
                   €{typeof producto.price === "number" ? producto.price.toFixed(2) : "0.00"}
                 </td>

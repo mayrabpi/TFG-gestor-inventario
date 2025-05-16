@@ -18,6 +18,17 @@ const EditProductForm = ({ product, onClose }) => {
         <form onSubmit={handleSubmit} className="p-4 border rounded">
             <h2 className="mb-4 font-bold text-xl">Editar Producto</h2>
             <div className="mb-4">
+                <label className="block mb-2">Codigo de barras</label>
+                <input
+                    type="text"
+                    value={updatedProduct.id}
+                    //onChange={(e) => setUpdatedProduct({ ...updatedProduct, name: e.target.value })}
+                    disabled
+                    className="bg-gray-100 p-2 border w-full text-gray-600"
+
+                />
+            </div>
+            <div className="mb-4">
                 <label className="block mb-2">Nombre del Producto</label>
                 <input
                     type="text"

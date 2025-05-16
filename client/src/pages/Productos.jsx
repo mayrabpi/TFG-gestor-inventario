@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import AddProductForm from "../componentes/AddProductForm";
+import ReponerProductoForm from "../componentes/ReponerProductoForm"; // Importa el componente correcto
 import ListaProductos from "../componentes/ListaProductos";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaSync } from "react-icons/fa";
 import { getProducts, updateProduct, deleteProduct } from "../api";
 
 const Productos = () => {
     const [productos, setProductos] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [showReponerForm, setShowReponerForm] = useState(false); // Nuevo estado
     const [showEditForm, setShowEditForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [formData, setFormData] = useState({
         id: null,
         name: "",
         units: 0,
-        quantity: 0,
+        // quantity: 0,
         price: 0,
         lowStockThreshold: 0,
         perishable: false,
@@ -39,6 +41,10 @@ const Productos = () => {
         setShowAddForm(!showAddForm);
     };
 
+    const toggleReponerForm = () => {
+        setShowReponerForm(!showReponerForm);
+    };
+
     const handleEdit = (product) => {
         setFormData(product);
         setShowEditForm(true);
@@ -60,6 +66,11 @@ const Productos = () => {
         setShowAddForm(false);
     };
 
+    const handleReponer = () => {
+        fetchProducts();
+        setShowReponerForm(false);
+    };
+
     const handleFormSubmit = (e) => {
         e.preventDefault();
         updateProduct(formData.id, formData)
@@ -75,7 +86,7 @@ const Productos = () => {
         <div className="p-4">
             <h1 className="mb-4 font-bold text-3xl">Gestión de Productos</h1>
 
-            {/* Botón para añadir producto */}
+            {/* Botones para añadir y reponer producto */}
             <div className="flex flex-wrap gap-2 mb-4">
                 <button
                     onClick={toggleAddForm}
@@ -83,6 +94,13 @@ const Productos = () => {
                 >
                     <FaPlus />
                     {showAddForm ? "Cerrar Formulario" : "Añadir Producto"}
+                </button>
+                <button
+                    onClick={toggleReponerForm}
+                    className="flex items-center gap-2 bg-green-600 px-4 py-2 rounded text-white"
+                >
+                    <FaSync />
+                    {showReponerForm ? "Cerrar Reposición" : "Reponer Productos"}
                 </button>
             </div>
 
@@ -94,6 +112,19 @@ const Productos = () => {
                             productos={productos}
                             onClose={toggleAddForm}
                             onProductAdded={handleProductAdded}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {/* Formulario modal para reponer productos */}
+            {showReponerForm && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-96">
+                        <ReponerProductoForm
+                            productos={productos}
+                            onClose={toggleReponerForm}
+                            onReponer={handleReponer}
                         />
                     </div>
                 </div>
