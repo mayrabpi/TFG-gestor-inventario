@@ -7,13 +7,14 @@ import smtplib
 from email.mime.text import MIMEText
 
 app = Flask(__name__)
-CORS(app)  # Permite que el frontend (React) se comunique con el backend
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)  # Permite que el frontend (React) se comunique con el backend
 
 # Configuración de MongoDB
 client = MongoClient("mongodb://localhost:27017/")  # Cambia la URL si usas un servidor remoto
 db = client["inventory_db"]  # Nombre de la base de datos
 products_collection = db["products"]  # Colección de productos
 providers_collection = db["providers"]  # Colección de proveedores
+ventas_collection = db["ventas"]  # Colección de ventas
 
 # Configurar el registro
 logging.basicConfig(level=logging.DEBUG)
@@ -23,7 +24,7 @@ logging.basicConfig(level=logging.DEBUG)
 # Ruta para obtener todos los productos
 @app.route("/products", methods=["GET"])
 def get_products():
-    products = list(products_collection.find({}, {"_id": 0, "id": 1, "name": 1, "units": 1, "quantity": 1, "price": 1,"salePrice": 1, "lowStockThreshold": 1, "perishable": 1, "expirationDate": 1}))
+    products = list(products_collection.find({}, {"_id": 0, "id": 1, "name": 1, "units": 1, "quantity": 1, "price": 1, "lowStockThreshold": 1, "perishable": 1, "expirationDate": 1}))
     logging.debug("Productos enviados al frontend: %s", products)
     return jsonify(products)
 
@@ -150,6 +151,14 @@ def fix_products_ids():
             updates.append({"_id": str(product["_id"]), "new_id": new_id})
 
     return jsonify({"message": "IDs actualizados para productos sin ID", "updates": updates})
+
+# -------------------- Ruta para registrar una venta --------------------
+@app.route("/ventas", methods=["POST"])
+def guardar_venta():
+    data = request.json
+    data["fecha"]= data.get("fecha") or None
+    ventas_collection.insert_one(data)
+    return jsonify({"message": "Venta registrada exitosamente"}), 201
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../api";
 import { useNavigate } from "react-router-dom";
-import { FaBox, FaUndo, FaBell, FaCalendarAlt } from "react-icons/fa"; // Importar íconos necesarios
+import { FaBox, FaUndo, FaBell, FaCalendarAlt, FaTachometerAlt } from "react-icons/fa"; // Importar íconos necesarios
 
 const Inicio = () => {
     const [productos, setProductos] = useState([]);
@@ -44,21 +44,21 @@ const Inicio = () => {
 
     return (
         <div className="p-4">
-            <h1 className="mb-4 font-bold text-3xl">Panel de Control</h1>
+            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> <FaTachometerAlt /> Panel de Control</h1>
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="bg-blue-100 shadow p-4 rounded">
+                <div className="bg-blue-100 shadow-lg p-4 rounded">
                     <h2 className="font-bold sm:text-xs lg:text-xl">Total de Productos</h2>
                     <p className="text-2xl">{totalProductos}</p>
                 </div>
-                <div className="bg-red-100 shadow p-4 rounded">
+                <div className="bg-red-100 shadow-lg p-4 rounded">
                     <h2 className="font-bold sm:text-xs lg:text-xl">Alertas de Stock Bajo</h2>
                     <p className="text-2xl">{alertasStock}</p>
                 </div>
-                <div className="bg-yellow-100 shadow p-4 rounded">
+                <div className="bg-yellow-100 shadow-lg p-4 rounded">
                     <h2 className="font-bold sm:text-xs lg:text-xl">Productos Caducados</h2>
                     <p className="text-2xl">{productosCaducados}</p>
                 </div>
-                <div className="bg-green-100 shadow p-4 rounded">
+                <div className="bg-green-100 shadow-lg p-4 rounded">
                     <h2 className="font-bold sm:text-xs lg:text-xl">Próximos a Caducar</h2>
                     <p className="text-2xl">{productosProximosCaducar}</p>
                 </div>
@@ -67,14 +67,14 @@ const Inicio = () => {
             {/* Segunda fila */}
             <div className="gap-4 grid grid-cols-1 lg:grid-cols-3 mt-8">
                 {/* Div más grande para el valor del inventario */}
-                <div className="lg:col-span-2 bg-gray-50 shadow p-6 rounded">
+                <div className="lg:col-span-2 bg-gray-50 shadow-lg p-6 rounded">
                     <h2 className="mb-2 font-bold text-xl">Valor del Inventario</h2>
                     <p className="font-bold text-4xl">€{valorInventario}</p>
                     <p className="mt-2 text-gray-500">Valor total aproximado de todos los productos</p>
                 </div>
 
                 {/* Div con acciones rápidas */}
-                <div className="bg-gray-50 shadow p-6 rounded">
+                <div className="bg-gray-50 shadow-lg p-6 rounded">
                     <h2 className="mb-4 font-bold text-xl">Acciones rápidas</h2>
                     <div className="flex flex-col gap-2">
                         <button

@@ -47,7 +47,7 @@ const RegistrarDevolucion = ({ onCancel, onInventoryUpdate }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="p-4 border rounded">
+        <form onSubmit={handleSubmit} className="shadow-lg p-4 border border-gray-300 rounded">
             <h2 className="mb-4 font-bold text-xl">Registrar Devolución</h2>
 
             <div className="mb-4">
@@ -56,7 +56,7 @@ const RegistrarDevolucion = ({ onCancel, onInventoryUpdate }) => {
                     type="text"
                     value={codigoBarras}
                     onChange={handleSearch}
-                    className="p-2 border w-full"
+                    className="p-2 border border-gray-400 rounded w-full"
                     placeholder="Escanea o escribe el código"
                     required
                 />
@@ -73,7 +73,7 @@ const RegistrarDevolucion = ({ onCancel, onInventoryUpdate }) => {
                     type="number"
                     value={units}
                     onChange={(e) => setUnits(parseInt(e.target.value) || 0)}
-                    className="p-2 border w-full"
+                    className="p-2 border border-gray-400 rounded w-full"
                     required
                 />
             </div>
@@ -82,13 +82,13 @@ const RegistrarDevolucion = ({ onCancel, onInventoryUpdate }) => {
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="bg-gray-500 px-4 py-2 rounded text-white"
+                    className="bg-gray-600 hover:bg-gray-500 mt-4 mb-2 px-4 py-2 rounded-md text-white transition-colors"
                 >
                     Cancelar
                 </button>
                 <button
                     type="submit"
-                    className="bg-blue-500 px-4 py-2 rounded text-white"
+                    className="bg-blue-500 hover:bg-blue-400 mt-4 mb-2 px-4 py-2 rounded-md text-white transition-colors"
                 >
                     Registrar Devolución
                 </button>

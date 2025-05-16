@@ -19,7 +19,7 @@ const RegistroProveedorForm = ({ formData, onClose, onSubmit }) => {
 
     return (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-            <div className="bg-white shadow-md p-6 rounded w-96">
+            <div className="bg-white shadow-lg p-6 rounded w-96">
                 <h2 className="mb-4 font-bold text-xl">
                     {localFormData.id ? "Modificar Proveedor" : "Registrar Proveedor"}
                 </h2>
@@ -67,17 +67,17 @@ const RegistroProveedorForm = ({ formData, onClose, onSubmit }) => {
                             className="p-2 border w-full"
                         />
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="bg-gray-500 mr-2 px-4 py-2 rounded text-white"
+                            className="bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                         >
                             Cancelar
                         </button>
                         <button
                             type="submit"
-                            className="bg-blue-500 px-4 py-2 rounded text-white"
+                            className="bg-blue-500 hover:bg-blue-600 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                         >
                             {localFormData.id ? "Guardar Cambios" : "Registrar"}
                         </button>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RegistrarDevolucion from "../componentes/RegistrarDevolucion";
 import { getProducts } from "../api";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaUndo } from "react-icons/fa";
 
 const Devolucion = () => {
     const [showForm, setShowForm] = useState(false);
@@ -23,10 +23,10 @@ const Devolucion = () => {
 
     return (
         <div className="p-4">
-            <h1 className="mb-4 font-bold text-3xl">Gestión de Devoluciones</h1>
+            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> <FaUndo /> Gestión de Devoluciones</h1>
             <button
                 onClick={toggleForm}
-                className="flex items-center gap-2 bg-gray-600 mb-4 px-4 py-2 rounded text-white"
+                className="flex items-center gap-2 bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
             >
                 <FaPlus />
                 {showForm ? "Cerrar Formulario" : "Nueva Devolución"}

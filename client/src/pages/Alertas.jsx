@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../api";
+import { FaSearchPlus, FaExclamationTriangle } from "react-icons/fa";
 
 const Alertas = () => {
     const [productos, setProductos] = useState([]);
@@ -22,15 +23,16 @@ const Alertas = () => {
     );
 
     return (
-        <div className="p-4">
-            <h1 className="mb-4 font-bold text-3xl">Alertas de Stock Bajo</h1>
+        <div className="flex flex-col p-6 min-h-screen">
+            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"><FaExclamationTriangle className="mr-2" />
+                Alertas de Stock</h1>
             <div className="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {productosBajoStock.map((producto) => (
                     <div
                         key={producto.id}
-                        className="shadow-md p-4 border border-yellow-400 rounded"
+                        className="shadow-md p-4 border border-yellow-500 rounded"
                     >
-                        <h2 className="font-bold text-xl">{producto.name}</h2>
+                        <h2 className="font-bold text-gray-700 text-xl">{producto.name}</h2>
                         <p className="text-gray-600">
                             Umbral: {producto.lowStockThreshold} unidades
                         </p>
@@ -43,10 +45,11 @@ const Alertas = () => {
                                 : `${producto.lowStockThreshold - producto.units} por debajo del umbral`}
                         </p>
                         <button
-                            className="bg-blue-500 mt-4 px-4 py-2 rounded text-white"
-                            onClick={() => setProductoSeleccionado(producto)} // Mostrar modal
+                            className="flex justify-center items-center bg-blue-500 hover:bg-blue-400 mt-4 mb-2 px-4 py-1.5 rounded-md w-full text-white transition-colors"
+                            onClick={() => setProductoSeleccionado(producto)}
                         >
-                            Ver producto
+                            <FaSearchPlus className="mr-2" />
+                            Ver detalles
                         </button>
                     </div>
                 ))}

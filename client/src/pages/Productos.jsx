@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddProductForm from "../componentes/AddProductForm";
-import ReponerProductoForm from "../componentes/ReponerProductoForm"; // Importa el componente correcto
+import ReponerProductoForm from "../componentes/ReponerProductoForm";
+import EditProductForm from "../componentes/EditProductForm";
 import ListaProductos from "../componentes/ListaProductos";
 import { FaPlus, FaSync } from "react-icons/fa";
 import { getProducts, updateProduct, deleteProduct } from "../api";
@@ -8,19 +9,10 @@ import { getProducts, updateProduct, deleteProduct } from "../api";
 const Productos = () => {
     const [productos, setProductos] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
-    const [showReponerForm, setShowReponerForm] = useState(false); // Nuevo estado
+    const [showReponerForm, setShowReponerForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [formData, setFormData] = useState({
-        id: null,
-        name: "",
-        units: 0,
-        // quantity: 0,
-        price: 0,
-        lowStockThreshold: 0,
-        perishable: false,
-        expirationDate: "",
-    });
+    const [formData, setFormData] = useState(null);
 
     useEffect(() => {
         fetchProducts();
@@ -71,33 +63,27 @@ const Productos = () => {
         setShowReponerForm(false);
     };
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        updateProduct(formData.id, formData)
-            .then(() => {
-                alert("Producto actualizado correctamente");
-                setShowEditForm(false);
-                fetchProducts();
-            })
-            .catch((err) => console.error("Error al actualizar el producto:", err));
+    const handleEditClose = () => {
+        setShowEditForm(false);
+        fetchProducts();
     };
 
     return (
         <div className="p-4">
-            <h1 className="mb-4 font-bold text-3xl">Gestión de Productos</h1>
+            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> Gestión de Productos</h1>
 
             {/* Botones para añadir y reponer producto */}
             <div className="flex flex-wrap gap-2 mb-4">
                 <button
                     onClick={toggleAddForm}
-                    className="flex items-center gap-2 bg-gray-600 px-4 py-2 rounded text-white"
+                    className="flex items-center gap-2 bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                 >
                     <FaPlus />
                     {showAddForm ? "Cerrar Formulario" : "Añadir Producto"}
                 </button>
                 <button
                     onClick={toggleReponerForm}
-                    className="flex items-center gap-2 bg-green-600 px-4 py-2 rounded text-white"
+                    className="flex items-center gap-2 bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                 >
                     <FaSync />
                     {showReponerForm ? "Cerrar Reposición" : "Reponer Productos"}
@@ -106,7 +92,7 @@ const Productos = () => {
 
             {/* Formulario modal para añadir producto */}
             {showAddForm && (
-                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
                     <div className="bg-white shadow-md p-6 rounded w-96">
                         <AddProductForm
                             productos={productos}
@@ -119,7 +105,7 @@ const Productos = () => {
 
             {/* Formulario modal para reponer productos */}
             {showReponerForm && (
-                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
                     <div className="bg-white shadow-md p-6 rounded w-96">
                         <ReponerProductoForm
                             productos={productos}
@@ -150,74 +136,13 @@ const Productos = () => {
             />
 
             {/* Formulario modal para editar producto */}
-            {showEditForm && (
+            {showEditForm && formData && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
                     <div className="bg-white shadow-md p-6 rounded w-96">
-                        <h2 className="mb-4 font-bold text-xl">Modificar Producto</h2>
-                        <form onSubmit={handleFormSubmit}>
-                            <div className="mb-4">
-                                <label className="block mb-2">Nombre</label>
-                                <input
-                                    type="text"
-                                    value={formData.name}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, name: e.target.value })
-                                    }
-                                    className="p-2 border w-full"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2">Unidades</label>
-                                <input
-                                    type="number"
-                                    value={formData.units}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, units: e.target.value })
-                                    }
-                                    className="p-2 border w-full"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2">Cantidad</label>
-                                <input
-                                    type="number"
-                                    value={formData.quantity}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, quantity: e.target.value })
-                                    }
-                                    className="p-2 border w-full"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2">Precio</label>
-                                <input
-                                    type="number"
-                                    value={formData.price}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, price: e.target.value })
-                                    }
-                                    className="p-2 border w-full"
-                                    required
-                                />
-                            </div>
-                            <div className="flex justify-end">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowEditForm(false)}
-                                    className="bg-gray-500 mr-2 px-4 py-2 rounded text-white"
-                                >
-                                    Cancelar
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="bg-blue-500 px-4 py-2 rounded text-white"
-                                >
-                                    Guardar Cambios
-                                </button>
-                            </div>
-                        </form>
+                        <EditProductForm
+                            product={formData}
+                            onClose={handleEditClose}
+                        />
                     </div>
                 </div>
             )}

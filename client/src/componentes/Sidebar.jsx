@@ -13,13 +13,13 @@ const Sidebar = () => {
     <div>
       <button
         onClick={toggleSidebar}
-        className="md:hidden top-4 right-4 z-20 fixed bg-blue-500 p-2 rounded text-white"
+        className="md:hidden top-4 right-4 z-20 fixed bg-blue-500 hover:bg-blue-600 p-2 rounded text-white"
       >
         {isOpen ? "Cerrar" : "Menú"}
       </button>
       <div
         className={`${isOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 fixed md:relative z-10 bg-gray-800 text-white w-48 md:w-64 h-screen transition-transform`}
+          } md:translate-x-0 fixed md:relative z-10 bg-gray-700 text-white w-48 md:w-64 h-screen transition-transform`}
       >
         <h1 className="p-4 border-gray-700 border-b font-bold text-2xl">Gestión de Inventario</h1>
         <nav className="flex-1 p-4">

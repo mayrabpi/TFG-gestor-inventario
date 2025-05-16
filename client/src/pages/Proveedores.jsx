@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getProviders, getProductsByProvider, addProvider, updateProvider, deleteProvider } from "../api";
 import RegistroProveedorForm from "../componentes/RegistroProveedorForm";
 import ListaProductos from "../componentes/ListaProductos";
-import { FaEdit, FaTrash, FaEye, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaPlus, FaTruck } from 'react-icons/fa';
 
 const Proveedores = () => {
     const [proveedores, setProveedores] = useState([]);
@@ -106,10 +106,10 @@ const Proveedores = () => {
 
     return (
         <div className="p-4">
-            <h1 className="mb-4 font-bold text-3xl">Gestión de Proveedores</h1>
+            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> <FaTruck /> Gestión de Proveedores</h1>
             <button
                 onClick={handleAdd}
-                className="flex items-center gap-2 bg-gray-600 mb-4 px-4 py-2 rounded text-white"
+                className="flex items-center gap-2 bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
             >
                 <FaPlus />
                 Registrar Proveedor
@@ -206,13 +206,13 @@ const Proveedores = () => {
                         <div className="flex justify-between mt-4">
                             <button
                                 onClick={handleMakeOrder}
-                                className="bg-green-500 px-4 py-2 rounded text-white"
+                                className="bg-green-600 hover:bg-green-700 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Hacer Pedido
                             </button>
                             <button
                                 onClick={handleCloseModal}
-                                className="bg-gray-500 px-4 py-2 rounded text-white"
+                                className="bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Cerrar
                             </button>
@@ -245,13 +245,13 @@ const Proveedores = () => {
                         <div className="flex justify-end gap-2">
                             <button
                                 onClick={() => setShowOrderForm(false)}
-                                className="bg-gray-500 px-4 py-2 rounded text-white"
+                                className="bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={handleOrderSubmit}
-                                className="bg-blue-500 px-4 py-2 rounded text-white"
+                                className="bg-blue-500 hover:bg-blue-600 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Generar Pedido
                             </button>
@@ -274,7 +274,7 @@ const Proveedores = () => {
                         <div className="flex justify-end mt-4">
                             <button
                                 onClick={() => setPedidoGenerado(null)}
-                                className="bg-gray-500 px-4 py-2 rounded text-white"
+                                className="bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Cerrar
                             </button>

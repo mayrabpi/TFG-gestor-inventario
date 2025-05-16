@@ -31,7 +31,7 @@ const ModificarFechaButton = ({ producto, onFechaModificada }) => {
             />
             <button
                 onClick={handleModificarFecha}
-                className="bg-blue-500 px-4 py-2 rounded text-white"
+                className="bg-blue-500 hover:bg-blue-600 mt-2 mb-2 px-4 py-1.5 rounded-md w-full text-white transition-colors"
             >
                 Modificar fecha
             </button>

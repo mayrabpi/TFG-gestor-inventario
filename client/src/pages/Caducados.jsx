@@ -31,19 +31,19 @@ const Caducados = ({ productos = [] }) => {
     };
 
     return (
-        <div>
-            <h1 className="mb-4 font-bold text-2xl">Control de Caducidad</h1>
+        <div className="p-4">
+            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> <FaCalendarAlt /> Control de Caducidad</h1>
             <div className="flex space-x-4 mb-4">
                 <button
                     onClick={() => setView("proximos")}
-                    className={`px-4 py-2 rounded ${view === "proximos" ? "bg-blue-500 text-white" : "bg-gray-200"
+                    className={`px-4 py-2 rounded ${view === "proximos" ? " bg-blue-500 hover:bg-blue-600 mt-4 mb-2 px-4 py-1.5 rounded-md  text-white transition-colors" : "bg-gray-200 mt-4 mb-2 px-4 py-1.5 rounded-md"
                         }`}
                 >
                     Próximos a caducar ({proximosACaducar.length})
                 </button>
                 <button
                     onClick={() => setView("caducados")}
-                    className={`px-4 py-2 rounded ${view === "caducados" ? "bg-blue-500 text-white" : "bg-gray-200"
+                    className={`px-4 py-2 rounded ${view === "caducados" ? "bg-blue-500 hover:bg-blue-600 mt-4 mb-2 px-4 py-1.5 rounded-md text-white transition-colors" : "bg-gray-200 mt-4 mb-2 px-4 py-1.5 rounded-md"
                         }`}
                 >
                     Caducados ({caducados.length})
@@ -62,7 +62,7 @@ const Caducados = ({ productos = [] }) => {
                         return (
                             <div key={producto.id} className="shadow p-4 border rounded">
                                 <h2 className="font-bold text-lg">{producto.name}</h2>
-                                <span className="bg-orange-200 px-2 py-1 rounded text-orange-800 text-sm">
+                                <span className="bg-orange-100 px-2 py-1 rounded text-orange-800 text-sm">
                                     Próximo a caducar
                                 </span>
                                 <p>{producto.units} en stock</p>
@@ -102,7 +102,7 @@ const Caducados = ({ productos = [] }) => {
                             />
                             <button
                                 onClick={() => toggleForm(producto.id)}
-                                className="bg-blue-500 mt-2 px-4 py-2 rounded text-white"
+                                className="bg-blue-500 hover:bg-blue-600 mt-4 mb-2 px-4 py-1.5 rounded-md text-white transition-colors"
                             >
                                 {showForm === producto.id ? "Cerrar Formulario" : "Añadir a Devolución"}
                             </button>
