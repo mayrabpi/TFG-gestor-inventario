@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBell, FaTimes, FaTachometerAlt, FaHome, FaBox, FaUndo, FaExclamationTriangle, FaCalendarAlt, FaTruck } from "react-icons/fa";
+import { FaBell, FaClipboardList, FaTachometerAlt, FaHome, FaBox, FaUndo, FaExclamationTriangle, FaCalendarAlt, FaTruck } from "react-icons/fa";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +59,11 @@ const Sidebar = () => {
             <li>
               <Link to="/proveedores" className="flex items-center hover:text-gray-300">
                 <FaTruck className="mr-2" /> Proveedores
+              </Link>
+            </li>
+            <li>
+              <Link to="/inventario" className="flex items-center hover:text-gray-300">
+                <FaClipboardList className="mr-2" /> Inventario
               </Link>
             </li>
           </ul>

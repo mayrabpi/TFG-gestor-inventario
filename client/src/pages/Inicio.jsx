@@ -44,7 +44,7 @@ const Inicio = () => {
 
     return (
         <div className="p-4">
-            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> <FaTachometerAlt /> Panel de Control</h1>
+            <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-3xl"> <FaTachometerAlt /> Panel de Control</h1>
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="bg-blue-100 shadow-lg p-4 rounded">
                     <h2 className="font-bold sm:text-xs lg:text-xl">Total de Productos</h2>

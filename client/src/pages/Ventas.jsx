@@ -8,6 +8,9 @@ const Ventas = () => {
     const [barcode, setBarcode] = useState("");
     const [mostrarTicket, setMostrarTicket] = useState(false);
     const [total, setTotal] = useState(0);
+    const [showDevolucion, setShowDevolucion] = useState(false);
+    const [productoDevolver, setProductoDevolver] = useState("");
+    const [cantidadDevolver, setCantidadDevolver] = useState(1);
     const barcodeInputRef = useRef(null);
 
     useEffect(() => {
@@ -108,7 +111,7 @@ const Ventas = () => {
     return (
         <div className="bg-gray-50 min-h-screen">
             <div className="mx-auto px-4 py-8 max-w-6xl">
-                <h1 className="mb-6 font-bold text-gray-800 text-3xl">Punto de Venta</h1>
+                <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-3xl">Punto de Venta</h1>
                 <p className="mb-8 text-gray-600">Gestione las ventas de productos</p>
 
                 <div className="flex md:flex-row flex-col gap-6">
@@ -236,6 +239,16 @@ const Ventas = () => {
                         )}
                     </div>
                 </div>
+
+                {/* Botón de devolución siempre visible */}
+                <div className="flex justify-end mt-4">
+                    <button
+                        onClick={() => setShowDevolucion(true)}
+                        className="bg-yellow-500 hover:bg-yellow-600 px-6 py-2 rounded-lg font-bold text-white transition"
+                    >
+                        Devolver producto
+                    </button>
+                </div>
             </div>
 
             {/* Modal de Ticket */}
@@ -297,6 +310,69 @@ const Ventas = () => {
                                 className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white transition"
                             >
                                 Imprimir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal de Devolución */}
+            {showDevolucion && (
+                <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-full max-w-sm">
+                        <h2 className="mb-4 font-bold text-lg">Devolver producto</h2>
+                        <div className="mb-4">
+                            <label className="block mb-2">Código de barras</label>
+                            <input
+                                type="text"
+                                value={productoDevolver}
+                                onChange={e => setProductoDevolver(e.target.value)}
+                                className="p-2 border w-full"
+                                placeholder="Introduce o escanea el código de barras"
+                                autoFocus
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block mb-2">Cantidad</label>
+                            <input
+                                type="number"
+                                min={1}
+                                value={cantidadDevolver}
+                                onChange={e => setCantidadDevolver(e.target.value)}
+                                className="p-2 border w-full"
+                            />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={() => setShowDevolucion(false)}
+                                className="bg-gray-400 px-4 py-2 rounded text-white"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={() => {
+                                    const prod = productos.find(p => p.id === productoDevolver.trim());
+                                    if (!prod) {
+                                        alert("Producto no encontrado");
+                                        return;
+                                    }
+                                    if (Number(cantidadDevolver) < 1) {
+                                        alert("Cantidad inválida");
+                                        return;
+                                    }
+                                    updateProduct(prod.id, { ...prod, units: Number(prod.units) + Number(cantidadDevolver) })
+                                        .then(() => {
+                                            alert("Devolución realizada");
+                                            fetchProductos();
+                                            setShowDevolucion(false);
+                                            setProductoDevolver("");
+                                            setCantidadDevolver(1);
+                                        })
+                                        .catch(() => alert("Error al devolver el producto"));
+                                }}
+                                className="bg-yellow-500 px-4 py-2 rounded text-white"
+                            >
+                                Confirmar devolución
                             </button>
                         </div>
                     </div>

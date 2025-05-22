@@ -70,7 +70,7 @@ const Productos = () => {
 
     return (
         <div className="p-4">
-            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> Gestión de Productos</h1>
+            <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-xl sm:text-2xl"> Gestión de Productos</h1>
 
             {/* Botones para añadir y reponer producto */}
             <div className="flex flex-wrap gap-2 mb-4">

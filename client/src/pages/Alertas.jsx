@@ -24,7 +24,7 @@ const Alertas = () => {
 
     return (
         <div className="flex flex-col p-6 min-h-screen">
-            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"><FaExclamationTriangle className="mr-2" />
+            <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-3xl"><FaExclamationTriangle className="mr-2" />
                 Alertas de Stock</h1>
             <div className="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {productosBajoStock.map((producto) => (

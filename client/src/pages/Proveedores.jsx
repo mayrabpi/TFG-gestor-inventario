@@ -106,36 +106,39 @@ const Proveedores = () => {
 
     return (
         <div className="p-4">
-            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> <FaTruck /> Gestión de Proveedores</h1>
-            <button
-                onClick={handleAdd}
-                className="flex items-center gap-2 bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
-            >
-                <FaPlus />
-                Registrar Proveedor
-            </button>
+            <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-3xl">
+                <FaTruck /> Gestión de Proveedores
+            </h1>
+            <div className="flex flex-wrap gap-2 mb-4">
+                <button
+                    onClick={handleAdd}
+                    className="flex items-center gap-2 bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded-md text-white transition-colors"
+                >
+                    <FaPlus />
+                    Registrar Proveedor
+                </button>
+            </div>
 
             <div className="overflow-x-auto">
-                <table className="border border-gray-300 w-full border-collapse table-auto">
+                <table className="border border-gray-300 w-full text-sm sm:text-base border-collapse table-auto">
                     <thead>
                         <tr className="bg-gray-200">
-                            <th className="px-4 py-2 border border-gray-300">Nombre</th>
-                            <th className="px-4 py-2 border border-gray-300">Dirección</th>
-                            <th className="px-4 py-2 border border-gray-300">Teléfono</th>
-                            <th className="px-4 py-2 border border-gray-300">Correo Electrónico</th>
-                            <th className="px-4 py-2 border border-gray-300">Acciones</th>
+                            <th className="px-2 sm:px-4 py-2 border border-gray-300">Nombre</th>
+                            <th className="px-2 sm:px-4 py-2 border border-gray-300">Dirección</th>
+                            <th className="px-2 sm:px-4 py-2 border border-gray-300">Teléfono</th>
+                            <th className="px-2 sm:px-4 py-2 border border-gray-300">Correo Electrónico</th>
+                            <th className="px-2 sm:px-4 py-2 border border-gray-300">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {proveedores.map((proveedor) => (
                             <tr key={proveedor.id}>
-                                <td className="px-4 py-2 border border-gray-300">{proveedor.name}</td>
-                                <td className="px-4 py-2 border border-gray-300">{proveedor.address}</td>
-                                <td className="px-4 py-2 border border-gray-300">{proveedor.phone}</td>
-                                <td className="px-4 py-2 border border-gray-300">{proveedor.email || "N/A"}</td>
-                                <td className="px-4 py-2 border border-gray-300">
-                                    <div className="flex space-x-2">
-
+                                <td className="px-2 sm:px-4 py-2 border border-gray-300">{proveedor.name}</td>
+                                <td className="px-2 sm:px-4 py-2 border border-gray-300">{proveedor.address}</td>
+                                <td className="px-2 sm:px-4 py-2 border border-gray-300">{proveedor.phone}</td>
+                                <td className="px-2 sm:px-4 py-2 border border-gray-300">{proveedor.email || "N/A"}</td>
+                                <td className="px-2 sm:px-4 py-2 border border-gray-300">
+                                    <div className="flex flex-wrap gap-2 sm:gap-4">
                                         {/* Botón Editar */}
                                         <div className="group relative">
                                             <button
@@ -148,7 +151,6 @@ const Proveedores = () => {
                                                 Editar proveedor
                                             </div>
                                         </div>
-
                                         {/* Botón Eliminar */}
                                         <div className="group relative">
                                             <button
@@ -161,7 +163,6 @@ const Proveedores = () => {
                                                 Eliminar proveedor
                                             </div>
                                         </div>
-
                                         {/* Botón Ver Productos */}
                                         <div className="group relative">
                                             <button
@@ -174,7 +175,6 @@ const Proveedores = () => {
                                                 Ver productos
                                             </div>
                                         </div>
-
                                     </div>
                                 </td>
                             </tr>
@@ -183,18 +183,23 @@ const Proveedores = () => {
                 </table>
             </div>
 
+            {/* Modal Registro Proveedor */}
             {showForm && (
-                <RegistroProveedorForm
-                    formData={formData}
-                    onClose={() => setShowForm(false)}
-                    onSubmit={handleFormSubmit}
-                />
+                <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-full max-w-md">
+                        <RegistroProveedorForm
+                            formData={formData}
+                            onClose={() => setShowForm(false)}
+                            onSubmit={handleFormSubmit}
+                        />
+                    </div>
+                </div>
             )}
 
             {/* Modal para mostrar productos */}
             {showProductsModal && (
-                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-                    <div className="bg-white shadow-md p-6 rounded w-96">
+                <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-full max-w-2xl">
                         <h2 className="mb-4 font-bold text-xl">
                             Productos de {selectedProvider?.name}
                         </h2>
@@ -203,16 +208,16 @@ const Proveedores = () => {
                         ) : (
                             <p>No hay productos asociados a este proveedor.</p>
                         )}
-                        <div className="flex justify-between mt-4">
+                        <div className="flex flex-wrap justify-between gap-2 sm:gap-4 mt-4">
                             <button
                                 onClick={handleMakeOrder}
-                                className="bg-green-600 hover:bg-green-700 mb-4 px-4 py-2 rounded-md text-white transition-colors"
+                                className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Hacer Pedido
                             </button>
                             <button
                                 onClick={handleCloseModal}
-                                className="bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
+                                className="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Cerrar
                             </button>
@@ -223,8 +228,8 @@ const Proveedores = () => {
 
             {/* Formulario para confirmar pedido */}
             {showOrderForm && (
-                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-                    <div className="bg-white shadow-md p-6 rounded w-96">
+                <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-full max-w-md">
                         <h2 className="mb-4 font-bold text-xl">Confirmar Pedido</h2>
                         {selectedProducts.map((product, index) => (
                             <div key={product.id} className="mb-4">
@@ -242,16 +247,16 @@ const Proveedores = () => {
                                 />
                             </div>
                         ))}
-                        <div className="flex justify-end gap-2">
+                        <div className="flex flex-wrap justify-end gap-2">
                             <button
                                 onClick={() => setShowOrderForm(false)}
-                                className="bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
+                                className="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={handleOrderSubmit}
-                                className="bg-blue-500 hover:bg-blue-600 mb-4 px-4 py-2 rounded-md text-white transition-colors"
+                                className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Generar Pedido
                             </button>
@@ -262,8 +267,8 @@ const Proveedores = () => {
 
             {/* Modal para mostrar el pedido generado */}
             {pedidoGenerado && (
-                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-                    <div className="bg-white shadow-md p-6 rounded w-96">
+                <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                    <div className="bg-white shadow-md p-6 rounded w-full max-w-md">
                         <h2 className="mb-4 font-bold text-xl">Pedido Generado</h2>
                         <p><strong>Proveedor:</strong> {pedidoGenerado.providerEmail}</p>
                         <ul>
@@ -274,7 +279,7 @@ const Proveedores = () => {
                         <div className="flex justify-end mt-4">
                             <button
                                 onClick={() => setPedidoGenerado(null)}
-                                className="bg-gray-600 hover:bg-gray-500 mb-4 px-4 py-2 rounded-md text-white transition-colors"
+                                className="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded-md text-white transition-colors"
                             >
                                 Cerrar
                             </button>

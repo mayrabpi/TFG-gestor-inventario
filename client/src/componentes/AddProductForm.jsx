@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { addProduct, getProviders } from "../api"; // Asegúrate de tener una función para obtener proveedores
-//import { v4 as uuidv4 } from "uuid";
+import { addProduct, getProviders } from "../api";
 
 const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
   const [product, setProduct] = useState({
     id: "",
     name: "",
-    units: 0,
-    // quantity: 0,
-    price: 0,
-    lowStockThreshold: 0,
+    units: "",
+    price: "",
+    lowStockThreshold: "",
     perishable: false,
     expirationDate: "",
-    providerId: "", // Nuevo campo para el proveedor
+    providerId: "",
   });
+
   const [error, setError] = useState("");
-  const [providers, setProviders] = useState([]); // Estado para almacenar los proveedores
+  const [providers, setProviders] = useState([]);
 
   useEffect(() => {
-    // Cargar la lista de proveedores al montar el componente
     getProviders()
       .then((response) => setProviders(response.data))
       .catch((err) => console.error("Error al obtener los proveedores:", err));
@@ -27,7 +25,6 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validar si el producto ya existe
     if (productos.some((producto) => producto.id === product.id)) {
       setError("El código de barras ya está registrado para otro producto.");
       return;
@@ -35,9 +32,9 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
 
     const updatedProduct = {
       ...product,
-      id: product.id,
-      price: parseFloat(product.price),
-      units: parseFloat(product.units),
+      price: parseFloat(product.price) || 0,
+      units: parseFloat(product.units) || 0,
+      lowStockThreshold: parseInt(product.lowStockThreshold) || 0,
     };
 
     addProduct(updatedProduct)
@@ -46,10 +43,9 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
         setProduct({
           id: "",
           name: "",
-          units: 0,
-          //quantity: 0,
-          price: 0,
-          lowStockThreshold: 0,
+          units: "",
+          price: "",
+          lowStockThreshold: "",
           perishable: false,
           expirationDate: "",
           providerId: "",
@@ -77,7 +73,8 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
           placeholder="Escanea o introduce el código de barras"
           required
         />
-        <label className="block mb-2">Nombre del Producto</label>
+
+        <label className="block mt-4 mb-2">Nombre del Producto</label>
         <input
           type="text"
           value={product.name}
@@ -86,14 +83,17 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
           required
         />
       </div>
+
       <div className="mb-4">
         <label className="block mb-2">Unidades</label>
         <input
-          type="number"
-          step="0.01"
+          type="text"
+          inputMode="decimal"
+          pattern="^\d*\.?\d*$"
           value={product.units}
           onChange={(e) => setProduct({ ...product, units: e.target.value })}
           className="p-2 border w-full"
+          placeholder="Ej. 5.5"
           required
         />
       </div>
@@ -101,51 +101,68 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
       <div className="mb-4">
         <label className="block mb-2">Precio</label>
         <input
-          type="number"
-          step="0.01"
+          type="text"
+          inputMode="decimal"
+          pattern="^\d*\.?\d*$"
           value={product.price}
           onChange={(e) => setProduct({ ...product, price: e.target.value })}
           className="p-2 border w-full"
+          placeholder="Ej. 2.30"
           required
         />
       </div>
+
       <div className="mb-4">
         <label className="block mb-2">Umbral de Stock Bajo</label>
         <input
-          type="number"
+          type="text"
+          inputMode="numeric"
+          pattern="^\d+$"
           value={product.lowStockThreshold}
-          onChange={(e) => setProduct({ ...product, lowStockThreshold: parseInt(e.target.value) || 0 })}
+          onChange={(e) =>
+            setProduct({ ...product, lowStockThreshold: e.target.value })
+          }
           className="p-2 border w-full"
+          placeholder="Ej. 10"
           required
         />
       </div>
+
       <div className="mb-4">
         <label className="block mb-2">¿Es Perecedero?</label>
         <input
           type="checkbox"
           checked={product.perishable}
-          onChange={(e) => setProduct({ ...product, perishable: e.target.checked })}
+          onChange={(e) =>
+            setProduct({ ...product, perishable: e.target.checked })
+          }
           className="mr-2"
         />
         <span>Sí</span>
       </div>
+
       {product.perishable && (
         <div className="mb-4">
           <label className="block mb-2">Fecha de Caducidad</label>
           <input
             type="date"
             value={product.expirationDate}
-            onChange={(e) => setProduct({ ...product, expirationDate: e.target.value })}
+            onChange={(e) =>
+              setProduct({ ...product, expirationDate: e.target.value })
+            }
             className="p-2 border w-full"
             required
           />
         </div>
       )}
+
       <div className="mb-4">
         <label className="block mb-2">Proveedor (opcional)</label>
         <select
           value={product.providerId}
-          onChange={(e) => setProduct({ ...product, providerId: e.target.value })}
+          onChange={(e) =>
+            setProduct({ ...product, providerId: e.target.value })
+          }
           className="p-2 border w-full"
         >
           <option value="">Seleccionar proveedor</option>
@@ -156,6 +173,7 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
           ))}
         </select>
       </div>
+
       <div className="flex justify-end gap-2">
         <button
           type="button"
@@ -164,7 +182,10 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
         >
           Cancelar
         </button>
-        <button type="submit" className="bg-blue-500 px-4 py-2 rounded text-white">
+        <button
+          type="submit"
+          className="bg-blue-500 px-4 py-2 rounded text-white"
+        >
           Añadir Producto
         </button>
       </div>

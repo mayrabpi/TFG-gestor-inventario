@@ -32,7 +32,7 @@ const Caducados = ({ productos = [] }) => {
 
     return (
         <div className="p-4">
-            <h1 className="flex gap-2 mb-4 font-bold sm:text-2xl md:text-3xl lg:text-4xl"> <FaCalendarAlt /> Control de Caducidad</h1>
+            <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-3xl"> <FaCalendarAlt /> Control de Caducidad</h1>
             <div className="flex space-x-4 mb-4">
                 <button
                     onClick={() => setView("proximos")}

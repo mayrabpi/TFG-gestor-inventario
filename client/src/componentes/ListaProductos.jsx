@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 
 
 
 const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [productoVer, setProductoVer] = useState(null);
   const productsPerPage = 10; // Número de productos por página
 
   // Filtrar productos según el término de búsqueda
@@ -45,10 +46,23 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
                   €{typeof producto.price === "number" ? producto.price.toFixed(2) : "0.00"}
                 </td>
                 <td className="px-2 sm:px-4 py-2 border border-gray-300">
-                  <div className="flex space-x-2">
+                  <div className="flex gap-x-4">
+
+                    {/* Botón Ver producto */}
+                    <div className="group relative">
+                      <button
+                        onClick={() => setProductoVer(producto)}
+                        className="flex items-center bg-blue-400 px-2 py-1 rounded text-white text-xs sm:text-sm"
+                      >
+                        <FaEye className="text-lg" />
+                      </button>
+                      <div className="bottom-full left-1/2 z-10 absolute bg-black opacity-0 group-hover:opacity-100 mb-1 px-2 py-1 rounded text-white text-xs whitespace-nowrap transition -translate-x-1/2">
+                        Ver producto
+                      </div>
+                    </div>
 
                     {/* Botón Editar con tooltip */}
-                    <div className="group relative">
+                    <div className="group relative ">
                       <button
                         onClick={() => onEdit(producto)}
                         className="flex items-center bg-yellow-400 px-2 py-1 rounded text-white text-xs sm:text-sm"
@@ -81,6 +95,27 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
           </tbody>
         </table>
       </div>
+
+      {/* Modal Ver Producto */}
+      {productoVer && (
+        <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-40">
+          <div className="relative bg-white shadow-lg p-6 rounded-lg w-full max-w-md">
+            <button
+              className="top-2 right-2 absolute text-gray-500 hover:text-gray-700 text-xl"
+              onClick={() => setProductoVer(null)}
+            >
+              ×
+            </button>
+            <h2 className="mb-4 font-bold text-xl">Detalles del producto</h2>
+            <div className="mb-2"><strong>Código de barras:</strong> {productoVer.id}</div>
+            <div className="mb-2"><strong>Nombre:</strong> {productoVer.name}</div>
+            <div className="mb-2"><strong>Cantidad:</strong> {productoVer.units}</div>
+            <div className="mb-2"><strong>Precio:</strong> €{typeof productoVer.price === "number" ? productoVer.price.toFixed(2) : "0.00"}</div>
+            <div className="mb-2"><strong>Perecedero:</strong> {productoVer.percedero ? "Sí" : "No"}</div>
+            <div className="mb-2"><strong>Proveedor:</strong> {productoVer.proveedor ? productoVer.proveedor : "Sin proveedor"}</div>
+          </div>
+        </div>
+      )}
 
       {/* Paginación */}
       <div className="flex justify-center mt-4">

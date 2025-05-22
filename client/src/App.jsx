@@ -10,6 +10,7 @@ import Caducados from "./pages/Caducados";
 import Proveedores from "./pages/Proveedores";
 import Ventas from "./pages/Ventas"; // Importa la página de ventas
 import { getProducts } from "./api";
+import Inventario from "./pages/Inventario";
 
 const App = () => {
   const [productos, setProductos] = useState([]);
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/caducados" element={<Caducados productos={productos} />} />
             <Route path="/proveedores" element={<Proveedores />} />
             <Route path="/ventas" element={<Ventas />} /> {/* Ruta para la página de ventas */}
+            <Route path="/inventario" element={<Inventario />} />
           </Routes>
         </div>
       </div>
