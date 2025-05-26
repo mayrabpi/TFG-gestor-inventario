@@ -93,7 +93,7 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
           value={product.units}
           onChange={(e) => setProduct({ ...product, units: e.target.value })}
           className="p-2 border w-full"
-          placeholder="Ej. 5.5"
+          placeholder="Ingresa la cantidad de unidades"
           required
         />
       </div>
@@ -123,7 +123,7 @@ const AddProductForm = ({ productos = [], onClose, onProductAdded }) => {
             setProduct({ ...product, lowStockThreshold: e.target.value })
           }
           className="p-2 border w-full"
-          placeholder="Ej. 10"
+          placeholder="5"
           required
         />
       </div>

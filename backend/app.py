@@ -24,7 +24,7 @@ logging.basicConfig(level=logging.DEBUG)
 # Ruta para obtener todos los productos
 @app.route("/products", methods=["GET"])
 def get_products():
-    products = list(products_collection.find({}, {"_id": 0, "id": 1, "name": 1, "units": 1, "quantity": 1, "price": 1, "lowStockThreshold": 1, "perishable": 1, "expirationDate": 1}))
+    products = list(products_collection.find({}, {"_id": 0, "id": 1, "name": 1, "units": 1, "quantity": 1, "price": 1, "lowStockThreshold": 1, "perishable": 1, "expirationDate": 1, "providerId": 1}))
     logging.debug("Productos enviados al frontend: %s", products)
     return jsonify(products)
 

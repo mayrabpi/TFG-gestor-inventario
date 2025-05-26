@@ -1,12 +1,33 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaExclamationTriangle } from 'react-icons/fa';
+import DetallesProductoModal from "./DetallesProductoModal";
 
-
-
-const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
+const ListaProductos = ({ productos, searchTerm, onEdit, onDelete, proveedores = [], proveedor = null }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productoVer, setProductoVer] = useState(null);
-  const productsPerPage = 10; // Número de productos por página
+  const productsPerPage = 10;
+
+  // Función para obtener el nombre del proveedor
+  const getProveedorNombre = (providerId) => {
+    // Verificar primero si tenemos un proveedor individual pasado
+    if (proveedor && String(proveedor.id) === String(providerId)) {
+      return proveedor.name;
+    }
+
+    // De lo contrario, buscar en el array de proveedores
+    if (providerId && proveedores.length) {
+      const proveedorEncontrado = proveedores.find(p => String(p.id) === String(providerId));
+      if (proveedorEncontrado) return proveedorEncontrado.name;
+    }
+
+    return "Sin proveedor";
+  };
+
+  // Función para verificar si un producto tiene bajo stock
+  const esBajoStock = (producto) => {
+    if (!producto.lowStockThreshold) return false;
+    return producto.units <= producto.lowStockThreshold;
+  };
 
   // Filtrar productos según el término de búsqueda
   const filteredProducts = productos.filter((producto) => {
@@ -40,8 +61,20 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
           <tbody>
             {currentProducts.map((producto) => (
               <tr key={producto.id || producto.name}>
-                <td className="px-2 sm:px-4 py-2 border border-gray-300">{producto.name}</td>
-                <td className="px-2 sm:px-4 py-2 border border-gray-300">{producto.units}</td>
+                <td className="px-2 sm:px-4 py-2 border border-gray-300">
+                  <div className="flex items-center">
+                    {producto.name}
+                    {esBajoStock(producto) && (
+                      <div className="flex items-center ml-2 text-red-600" title="Bajo stock">
+                        <FaExclamationTriangle />
+                        <span className="ml-1 text-xs">¡Bajo stock!</span>
+                      </div>
+                    )}
+                  </div>
+                </td>
+                <td className={`px-2 sm:px-4 py-2 border border-gray-300 ${esBajoStock(producto) ? 'text-red-600 font-bold' : ''}`}>
+                  {producto.units}
+                </td>
                 <td className="px-2 sm:px-4 py-2 border border-gray-300">
                   €{typeof producto.price === "number" ? producto.price.toFixed(2) : "0.00"}
                 </td>
@@ -62,7 +95,7 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
                     </div>
 
                     {/* Botón Editar con tooltip */}
-                    <div className="group relative ">
+                    <div className="group relative">
                       <button
                         onClick={() => onEdit(producto)}
                         className="flex items-center bg-yellow-400 px-2 py-1 rounded text-white text-xs sm:text-sm"
@@ -96,25 +129,13 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete }) => {
         </table>
       </div>
 
-      {/* Modal Ver Producto */}
+      {/* Modal ver producto ahora usa el componente común */}
       {productoVer && (
-        <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-40">
-          <div className="relative bg-white shadow-lg p-6 rounded-lg w-full max-w-md">
-            <button
-              className="top-2 right-2 absolute text-gray-500 hover:text-gray-700 text-xl"
-              onClick={() => setProductoVer(null)}
-            >
-              ×
-            </button>
-            <h2 className="mb-4 font-bold text-xl">Detalles del producto</h2>
-            <div className="mb-2"><strong>Código de barras:</strong> {productoVer.id}</div>
-            <div className="mb-2"><strong>Nombre:</strong> {productoVer.name}</div>
-            <div className="mb-2"><strong>Cantidad:</strong> {productoVer.units}</div>
-            <div className="mb-2"><strong>Precio:</strong> €{typeof productoVer.price === "number" ? productoVer.price.toFixed(2) : "0.00"}</div>
-            <div className="mb-2"><strong>Perecedero:</strong> {productoVer.percedero ? "Sí" : "No"}</div>
-            <div className="mb-2"><strong>Proveedor:</strong> {productoVer.proveedor ? productoVer.proveedor : "Sin proveedor"}</div>
-          </div>
-        </div>
+        <DetallesProductoModal
+          producto={productoVer}
+          onClose={() => setProductoVer(null)}
+          proveedorNombre={getProveedorNombre(productoVer.providerId)}
+        />
       )}
 
       {/* Paginación */}
