@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getProducts, updateProduct, guardarVenta } from "../api";
+import { Link } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
 
 const Ventas = () => {
     const [productos, setProductos] = useState([]);
@@ -111,7 +113,17 @@ const Ventas = () => {
     return (
         <div className="bg-gray-50 min-h-screen">
             <div className="mx-auto px-4 py-8 max-w-6xl">
-                <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-3xl">Punto de Venta</h1>
+                <div className="flex justify-between items-center mb-6">
+                    <h1 className="flex gap-2 font-bold text-gray-800 text-3xl">Punto de Venta</h1>
+                    
+                    <Link 
+                      to="/"
+                      className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-gray-700 transition flex items-center gap-2"
+                    >
+                      <FaHome /> Inicio
+                    </Link>
+                </div>
+                
                 <p className="mb-8 text-gray-600">Gestione las ventas de productos</p>
 
                 <div className="flex md:flex-row flex-col gap-6">
