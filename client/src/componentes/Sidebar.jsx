@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBell, FaClipboardList, FaTachometerAlt, FaHome, FaBox, FaUndo, FaExclamationTriangle, FaCalendarAlt, FaTruck } from "react-icons/fa";
+import { 
+  FaBell, 
+  FaClipboardList, 
+  FaTachometerAlt, 
+  FaHome, 
+  FaBox, 
+  FaUndo, 
+  FaExclamationTriangle, 
+  FaCalendarAlt, 
+  FaTruck,
+  FaBook // Nuevo icono para el manual
+} from "react-icons/fa";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,6 +75,12 @@ const Sidebar = () => {
             <li>
               <Link to="/inventario" className="flex items-center hover:text-gray-300">
                 <FaClipboardList className="mr-2" /> Inventario
+              </Link>
+            </li>
+            {/* Nuevo enlace al Manual de Usuario */}
+            <li>
+              <Link to="/manual" className="flex items-center hover:text-gray-300">
+                <FaBook className="mr-2" /> Manual de Usuario
               </Link>
             </li>
           </ul>

@@ -11,6 +11,7 @@ import Proveedores from "./pages/Proveedores";
 import Ventas from "./pages/Ventas"; // Importa la página de ventas
 import { getProducts } from "./api";
 import Inventario from "./pages/Inventario";
+import ManualUsuario from "./pages/ManualUsuario";
 
 const App = () => {
   const [productos, setProductos] = useState([]);
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/proveedores" element={<Proveedores />} />
             <Route path="/ventas" element={<Ventas />} /> {/* Ruta para la página de ventas */}
             <Route path="/inventario" element={<Inventario />} />
+            <Route path="/manual" element={<ManualUsuario />} />
           </Routes>
         </div>
       </div>
