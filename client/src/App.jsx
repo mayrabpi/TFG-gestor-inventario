@@ -20,6 +20,12 @@ const AppContent = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   
+  // Determinar si estamos en una página sin sidebar
+  const noSidebarPage = location.pathname === "/ventas" || location.pathname === "/";
+  
+  // Determinar si estamos específicamente en la página Home
+  const isHomePage = location.pathname === "/";
+  
   // Determinar si estamos en la página de ventas
   const isVentasPage = location.pathname === "/ventas";
 
@@ -32,19 +38,12 @@ const AppContent = () => {
   return (
     <div className="flex">
       {/* Sidebar condicional */}
-      {isVentasPage ? (
-        // En página de ventas, mostrar solo botón de acceso al sidebar
+      {noSidebarPage ? (
+        // En página de ventas o home, sin botón de sidebar
         <>
-          {/* Botón para mostrar sidebar */}
-          <button 
-            onClick={() => setSidebarOpen(true)}
-            className={`${sidebarOpen ? 'hidden' : 'block'} fixed z-20 top-4 left-4 bg-blue-500 hover:bg-blue-600 p-2 rounded-full shadow-lg text-white transition-all duration-300`}
-            aria-label="Abrir menú"
-          >
-            <FaBars size={18} />
-          </button>
+          {/* El botón fue eliminado - ya no se muestra en ninguna página */}
           
-          {/* Sidebar flotante cuando se abre */}
+          {/* Sidebar flotante cuando se abre (se mantiene aunque no hay forma de abrirlo desde UI) */}
           {sidebarOpen && (
             <>
               {/* Overlay para cerrar el sidebar al hacer clic fuera */}
@@ -66,7 +65,7 @@ const AppContent = () => {
       )}
 
       {/* Contenido principal */}
-      <div className={`${isVentasPage ? "w-full" : "flex-1"} p-4`}>
+      <div className={`${noSidebarPage ? "w-full" : "flex-1"} p-4`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/inicio" element={<Inicio />} />

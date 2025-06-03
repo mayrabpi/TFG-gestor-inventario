@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { 
-  FaBell, 
-  FaClipboardList, 
-  FaTachometerAlt, 
-  FaHome, 
-  FaBox, 
-  FaUndo, 
-  FaExclamationTriangle, 
-  FaCalendarAlt, 
+import {
+  FaBell,
+  FaClipboardList,
+  FaTachometerAlt,
+  FaHome,
+  FaBox,
+  FaUndo,
+  FaExclamationTriangle,
+  FaCalendarAlt,
   FaTruck,
   FaBook,
   FaTimes
@@ -19,6 +19,14 @@ const Sidebar = ({ onClose }) => {
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  // Función para manejar los clics en enlaces
+  const handleLinkClick = () => {
+    // Si hay una función onClose proporcionada, llámala
+    if (onClose) {
+      onClose();
+    }
   };
 
   return (
@@ -53,7 +61,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 <FaHome className="mr-2" /> Home
               </Link>
@@ -63,7 +71,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/inicio" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 <FaTachometerAlt className="mr-2" /> Panel de Control
               </Link>
@@ -72,7 +80,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/productos" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 <FaBox className="mr-2" /> Productos
               </Link>
@@ -81,7 +89,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/devolucion" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 <FaUndo className="mr-2" /> Devolución
               </Link>
@@ -90,7 +98,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/alertas" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 < FaBell className="mr-2" /> Alertas
               </Link>
@@ -99,7 +107,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/caducados" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 <FaCalendarAlt className="mr-2" /> Caducados
               </Link>
@@ -108,7 +116,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/proveedores" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 <FaTruck className="mr-2" /> Proveedores
               </Link>
@@ -117,7 +125,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/inventario" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 <FaClipboardList className="mr-2" /> Inventario
               </Link>
@@ -127,7 +135,7 @@ const Sidebar = ({ onClose }) => {
               <Link 
                 to="/manual" 
                 className="flex items-center hover:text-gray-300"
-                onClick={onClose && (() => onClose())}
+                onClick={handleLinkClick}
               >
                 <FaBook className="mr-2" /> Manual de Usuario
               </Link>

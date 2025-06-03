@@ -11,7 +11,7 @@ const Caducados = ({ productos: productosIniciales = [] }) => {
     const [view, setView] = useState("proximos");
     const [showForm, setShowForm] = useState(null);
     const navigate = useNavigate();
-    const [refreshKey, setRefreshKey] = useState(0); // Clave para forzar un re-render
+    const [refreshKey, setRefreshKey] = useState(0); // Mantenemos esta clave para la lógica interna
 
     const today = new Date();
 
@@ -109,13 +109,7 @@ const Caducados = ({ productos: productosIniciales = [] }) => {
                     </button>
                 </div>
 
-                {/* Botón para actualizar manualmente */}
-                <button
-                    onClick={() => setRefreshKey(old => old + 1)}
-                    className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded text-gray-700 transition-colors"
-                >
-                    Actualizar datos
-                </button>
+                {/* Botón de actualizar datos eliminado */}
             </div>
 
             {/* Vista de productos próximos a caducar */}

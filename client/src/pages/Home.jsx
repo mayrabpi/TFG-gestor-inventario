@@ -26,7 +26,7 @@ const Home = () => {
                             Gestione su inventario, añada nuevos productos y controle existencias
                         </p>
                         <button
-                            onClick={() => navigate("/productos")}
+                            onClick={() => navigate("/inicio")}
                             className="bg-blue-600 hover:bg-blue-700 focus:ring-opacity-50 px-6 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full font-medium text-white transition duration-300"
                         >
                             Ir al Control de Stock
