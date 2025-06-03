@@ -68,7 +68,7 @@ const RegistrarDevolucion = ({ onCancel, onInventoryUpdate }) => {
                 setUnits("");
                 setProductoSeleccionado(null);
                 setSugerencias([]);
-                if (onInventoryUpdate) onInventoryUpdate();
+                if (onInventoryUpdate) onInventoryUpdate(updatedProduct);
             })
             .catch((err) => {
                 console.error("Error al registrar la destrucción:", err);
