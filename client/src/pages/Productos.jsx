@@ -3,7 +3,7 @@ import AddProductForm from "../componentes/AddProductForm";
 import ReponerProductoForm from "../componentes/ReponerProductoForm";
 import EditProductForm from "../componentes/EditProductForm";
 import ListaProductos from "../componentes/ListaProductos";
-import { FaPlus, FaSync } from "react-icons/fa";
+import { FaPlus, FaSync, FaBox } from "react-icons/fa";
 import { getProducts, updateProduct, deleteProduct, getProviders } from "../api";
 
 const Productos = () => {
@@ -107,7 +107,8 @@ const Productos = () => {
 
     return (
         <div className="p-4">
-            <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-xl sm:text-2xl"> Gestión de Productos</h1>
+            <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-3xl"><FaBox className="mr-2" />
+                Gestión de productos</h1>
 
             {/* Botones para añadir y reponer producto */}
             <div className="flex flex-wrap gap-2 mb-4">

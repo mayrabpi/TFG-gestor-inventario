@@ -37,29 +37,29 @@ const Sidebar = ({ onClose }) => {
       >
         {isOpen ? "Cerrar" : "Menú"}
       </button>
-      
+
       <div
         className={`${isOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 fixed md:relative z-10 bg-gray-700 text-white w-48 md:w-64 h-screen transition-transform`}
+          } md:translate-x-0 fixed md:relative z-10 bg-gray-600 text-white w-48 md:w-64 h-screen transition-transform`}
       >
         {/* Botón de cierre (solo visible cuando se proporciona onClose) */}
         {onClose && (
-          <button 
+          <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-white hover:text-gray-300"
+            className="top-4 right-4 absolute text-white hover:text-gray-300"
             aria-label="Cerrar menú"
           >
             <FaTimes size={18} />
           </button>
         )}
-        
+
         <h1 className="p-4 border-gray-700 border-b font-bold text-2xl">Gestión de Inventario</h1>
         <nav className="flex-1 p-4">
           <ul className="space-y-4">
             {/* Enlace a la página Home */}
             <li>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
@@ -68,8 +68,8 @@ const Sidebar = ({ onClose }) => {
             </li>
             {/* Enlace al Panel de Control (Inicio) */}
             <li>
-              <Link 
-                to="/inicio" 
+              <Link
+                to="/inicio"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
@@ -77,8 +77,8 @@ const Sidebar = ({ onClose }) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/productos" 
+              <Link
+                to="/productos"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
@@ -86,8 +86,8 @@ const Sidebar = ({ onClose }) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/devolucion" 
+              <Link
+                to="/devolucion"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
@@ -95,8 +95,8 @@ const Sidebar = ({ onClose }) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/alertas" 
+              <Link
+                to="/alertas"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
@@ -104,8 +104,8 @@ const Sidebar = ({ onClose }) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/caducados" 
+              <Link
+                to="/caducados"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
@@ -113,8 +113,8 @@ const Sidebar = ({ onClose }) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/proveedores" 
+              <Link
+                to="/proveedores"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
@@ -122,8 +122,8 @@ const Sidebar = ({ onClose }) => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/inventario" 
+              <Link
+                to="/inventario"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
@@ -132,8 +132,8 @@ const Sidebar = ({ onClose }) => {
             </li>
             {/* Nuevo enlace al Manual de Usuario */}
             <li>
-              <Link 
-                to="/manual" 
+              <Link
+                to="/manual"
                 className="flex items-center hover:text-gray-300"
                 onClick={handleLinkClick}
               >
