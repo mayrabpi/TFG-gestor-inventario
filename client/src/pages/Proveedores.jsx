@@ -204,13 +204,7 @@ const Proveedores = () => {
                             Productos de {selectedProvider?.name}
                         </h2>
                         {productos.length > 0 ? (
-                            <ListaProductos 
-                                productos={productos} 
-                                searchTerm="" 
-                                onEdit={() => {}} 
-                                onDelete={() => {}}
-                                proveedor={selectedProvider} // Añadir esta línea
-                            />
+                            <ListaProductos productos={productos} searchTerm="" onEdit={() => { }} onDelete={() => { }} />
                         ) : (
                             <p>No hay productos asociados a este proveedor.</p>
                         )}

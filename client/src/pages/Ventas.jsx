@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getProducts, updateProduct, guardarVenta } from "../api";
 import { Link } from "react-router-dom";
-import { FaHome, FaShoppingCart } from "react-icons/fa";
-import logo from "../assets/logo.png"; // Importando el logo
+import { FaHome } from "react-icons/fa";
+import logo from "../assets/logo.png";
 
 const Ventas = () => {
     const [productos, setProductos] = useState([]);
@@ -63,14 +63,18 @@ const Ventas = () => {
     const handleBarcodeInput = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            const producto = productos.find((p) => p.id === barcode.trim());
-            if (producto) {
-                agregarAlCarrito(producto);
-                setBarcode("");
-            } else {
-                alert("Producto no encontrado");
-                setBarcode("");
-            }
+            buscarYAgregarProducto();
+        }
+    };
+
+    const buscarYAgregarProducto = () => {
+        const producto = productos.find((p) => p.id === barcode.trim());
+        if (producto) {
+            agregarAlCarrito(producto);
+            setBarcode("");
+        } else {
+            alert("Producto no encontrado");
+            setBarcode("");
         }
     };
 
@@ -84,7 +88,6 @@ const Ventas = () => {
 
         guardarVenta(venta)
             .then(() => {
-                // Actualiza stock como ya haces
                 carrito.forEach((item) => {
                     const nuevasUnidades = item.units - item.cantidad;
                     updateProduct(item.id, { ...item, units: nuevasUnidades })
@@ -113,14 +116,13 @@ const Ventas = () => {
 
     return (
         <div className="bg-gray-50 min-h-screen">
-            {/* Header con logo más grande y botón de inicio */}
+            {/* Header */}
             <div className="bg-white shadow-md mb-6">
                 <div className="flex justify-between items-center mx-auto px-4 py-3 max-w-6xl">
                     <div className="flex items-center space-x-5">
                         <img src={logo} alt="StockAgile Logo" className="h-16 md:h-20" />
                         <h1 className="font-bold text-gray-800 text-2xl md:text-3xl">Punto de Venta</h1>
                     </div>
-
                     <Link
                         to="/"
                         className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white transition"
@@ -134,10 +136,10 @@ const Ventas = () => {
                 <p className="mb-6 text-gray-600">Gestione las ventas de productos de forma rápida y eficiente</p>
 
                 <div className="flex md:flex-row flex-col gap-6">
-                    {/* Panel izquierdo - Selección de productos */}
-                    <div className="bg-white shadow p-6 rounded-lg w-full md:w-2/3">
-                        <div className="mb-6">
-                            <label className="block mb-2 font-semibold text-gray-700">Escanea el código de barras</label>
+                    {/* Panel izquierdo - Solo input de código de barras */}
+                    <div className="bg-white shadow p-6 rounded-lg w-full md:w-2/3 flex flex-col items-center justify-center">
+                        <div className="mb-6 w-full max-w-md">
+                            <label className="block mb-2 font-semibold text-gray-700">Escanea o introduce el código de barras</label>
                             <div className="flex">
                                 <input
                                     ref={barcodeInputRef}
@@ -151,60 +153,20 @@ const Ventas = () => {
                                 />
                                 <button
                                     className="bg-blue-500 hover:bg-blue-600 px-4 rounded-r-lg text-white transition"
-                                    onClick={() => {
-                                        const producto = productos.find((p) => p.id === barcode.trim());
-                                        if (producto) {
-                                            agregarAlCarrito(producto);
-                                            setBarcode("");
-                                        }
-                                    }}
+                                    onClick={buscarYAgregarProducto}
                                 >
                                     Buscar
                                 </button>
                             </div>
                         </div>
-
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="font-bold text-gray-800 text-xl">Productos</h2>
-                            <div className="flex items-center text-gray-500 text-sm">
-                                <FaShoppingCart className="mr-2" />
-                                {productos.length} artículos disponibles
-                            </div>
-                        </div>
-
-                        <div className="max-h-96 overflow-y-auto">
-                            <table className="w-full border-collapse">
-                                <thead className="bg-gray-100">
-                                    <tr>
-                                        <th className="p-3 text-gray-700 text-left">Producto</th>
-                                        <th className="p-3 text-gray-700 text-right">Precio</th>
-                                        <th className="p-3 text-gray-700 text-right">Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {productos.map((producto) => (
-                                        <tr key={producto.id} className="hover:bg-gray-50 border-gray-200 border-b">
-                                            <td className="p-3 text-gray-700">{producto.name}</td>
-                                            <td className="p-3 text-gray-700 text-right">{formatearPrecio(producto.price)}</td>
-                                            <td className="p-3 text-right">
-                                                <button
-                                                    onClick={() => agregarAlCarrito(producto)}
-                                                    className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-white transition"
-                                                >
-                                                    Añadir
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                        <div className="text-gray-400 text-sm mt-4">
+                            Añade productos al carrito escaneando o introduciendo el código de barras.
                         </div>
                     </div>
 
                     {/* Panel derecho - Carrito */}
                     <div className="bg-white shadow p-6 rounded-lg w-full md:w-1/3">
                         <h2 className="mb-4 font-bold text-gray-800 text-xl">Carrito de compras</h2>
-
                         {carrito.length === 0 ? (
                             <div className="py-10 text-gray-500 text-center">
                                 El carrito está vacío
@@ -277,7 +239,7 @@ const Ventas = () => {
                 </div>
             </div>
 
-            {/* Modal de Ticket con logo más grande */}
+            {/* Modal de Ticket */}
             {mostrarTicket && (
                 <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
                     <div className="bg-white shadow-lg mx-4 p-6 rounded-lg w-full max-w-md">
@@ -290,14 +252,13 @@ const Ventas = () => {
                                 ×
                             </button>
                         </div>
-
                         <div className="mb-4 py-4 border-gray-200 border-t border-b">
                             <div className="mb-4 text-center">
-                                <img src={logo} alt="StockAgile" className="mx-auto mb-2 h-14" />
                                 <p className="font-bold text-lg">StockAgile</p>
-                                <p className="text-gray-500 text-sm">{new Date().toLocaleDateString('es-ES')} - {new Date().toLocaleTimeString('es-ES')}</p>
+                                <p className="text-gray-500 text-sm">
+                                    {new Date().toLocaleDateString('es-ES')} - {new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
+                                </p>
                             </div>
-
                             <table className="mb-4 w-full">
                                 <thead>
                                     <tr className="border-gray-200 border-b">
@@ -316,21 +277,17 @@ const Ventas = () => {
                                     ))}
                                 </tbody>
                             </table>
-
                             <div className="flex justify-between mb-2 font-bold">
                                 <span>Total</span>
                                 <span>{formatearPrecio(total)}</span>
                             </div>
-
                             <div className="text-gray-600">
                                 <p>Método de pago: {metodoPago === "efectivo" ? "Efectivo" : metodoPago === "tarjeta" ? "Tarjeta" : "Transferencia"}</p>
                             </div>
                         </div>
-
                         <div className="text-gray-500 text-sm text-center">
                             <p>¡Gracias por su compra!</p>
                         </div>
-
                         <div className="flex justify-center mt-6">
                             <button
                                 onClick={cerrarTicket}
@@ -343,7 +300,7 @@ const Ventas = () => {
                 </div>
             )}
 
-            {/* Modal de Devolución - sin cambios */}
+            {/* Modal de Devolución */}
             {showDevolucion && (
                 <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
                     <div className="bg-white shadow-md p-6 rounded w-full max-w-sm">
