@@ -90,12 +90,8 @@ Las contribuciones son bienvenidas. Por favor, sigue estos pasos:
 
 ## Licencia
 
-Este proyecto está licenciado bajo los términos de la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
-<!-- O bien, si quieres reservar derechos:
-Este proyecto es propiedad de [tu nombre] y todos los derechos están reservados. Contacta para usos comerciales.
--->
+Este proyecto es propiedad de Mayra Barrantes Pi y todos los derechos están reservados. Contacta para usos comerciales.
 
----
 
 ## Contacto
 
