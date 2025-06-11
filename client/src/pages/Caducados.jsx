@@ -17,15 +17,12 @@ const Caducados = ({ productos: productosIniciales = [] }) => {
 
     // Efecto para cargar productos si no se proporcionan o cuando cambia refreshKey
     useEffect(() => {
-        // Si no hay productos iniciales o se necesita actualizar
-        if (productosIniciales.length === 0 || refreshKey > 0) {
-            getProducts()
-                .then(response => {
-                    setProductos(response.data);
-                })
-                .catch(err => console.error("Error al obtener los productos:", err));
-        }
-    }, [productosIniciales, refreshKey]);
+        getProducts()
+            .then(response => {
+                setProductos(response.data);
+            })
+            .catch(err => console.error("Error al obtener los productos:", err));
+    }, [refreshKey]);
 
     const proximosACaducar = productos.filter((producto) => {
         if (!producto.perishable || !producto.expirationDate) return false;
