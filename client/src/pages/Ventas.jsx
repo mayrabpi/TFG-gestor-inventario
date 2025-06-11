@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getProducts, updateProduct, guardarVenta } from "../api";
 import { Link } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaShoppingCart } from "react-icons/fa";
+import logo from "../assets/logo.png"; // Importando el logo
 
 const Ventas = () => {
     const [productos, setProductos] = useState([]);
@@ -112,19 +113,25 @@ const Ventas = () => {
 
     return (
         <div className="bg-gray-50 min-h-screen">
-            <div className="mx-auto px-4 py-8 max-w-6xl">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="flex gap-2 font-bold text-gray-800 text-3xl">Punto de Venta</h1>
-                    
-                    <Link 
-                      to="/"
-                      className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-gray-700 transition flex items-center gap-2"
+            {/* Header con logo más grande y botón de inicio */}
+            <div className="bg-white shadow-md mb-6">
+                <div className="flex justify-between items-center mx-auto px-4 py-3 max-w-6xl">
+                    <div className="flex items-center space-x-5">
+                        <img src={logo} alt="StockAgile Logo" className="h-16 md:h-20" />
+                        <h1 className="font-bold text-gray-800 text-2xl md:text-3xl">Punto de Venta</h1>
+                    </div>
+
+                    <Link
+                        to="/"
+                        className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white transition"
                     >
-                      <FaHome /> Inicio
+                        <FaHome className="text-lg" /> Inicio
                     </Link>
                 </div>
-                
-                <p className="mb-8 text-gray-600">Gestione las ventas de productos</p>
+            </div>
+
+            <div className="mx-auto px-4 pb-8 max-w-6xl">
+                <p className="mb-6 text-gray-600">Gestione las ventas de productos de forma rápida y eficiente</p>
 
                 <div className="flex md:flex-row flex-col gap-6">
                     {/* Panel izquierdo - Selección de productos */}
@@ -157,7 +164,14 @@ const Ventas = () => {
                             </div>
                         </div>
 
-                        <h2 className="mb-4 font-bold text-gray-800 text-xl">Productos</h2>
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="font-bold text-gray-800 text-xl">Productos</h2>
+                            <div className="flex items-center text-gray-500 text-sm">
+                                <FaShoppingCart className="mr-2" />
+                                {productos.length} artículos disponibles
+                            </div>
+                        </div>
+
                         <div className="max-h-96 overflow-y-auto">
                             <table className="w-full border-collapse">
                                 <thead className="bg-gray-100">
@@ -263,7 +277,7 @@ const Ventas = () => {
                 </div>
             </div>
 
-            {/* Modal de Ticket */}
+            {/* Modal de Ticket con logo más grande */}
             {mostrarTicket && (
                 <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
                     <div className="bg-white shadow-lg mx-4 p-6 rounded-lg w-full max-w-md">
@@ -279,7 +293,8 @@ const Ventas = () => {
 
                         <div className="mb-4 py-4 border-gray-200 border-t border-b">
                             <div className="mb-4 text-center">
-                                <p className="font-bold text-lg">Mi Tienda</p>
+                                <img src={logo} alt="StockAgile" className="mx-auto mb-2 h-14" />
+                                <p className="font-bold text-lg">StockAgile</p>
                                 <p className="text-gray-500 text-sm">{new Date().toLocaleDateString('es-ES')} - {new Date().toLocaleTimeString('es-ES')}</p>
                             </div>
 
@@ -328,7 +343,7 @@ const Ventas = () => {
                 </div>
             )}
 
-            {/* Modal de Devolución */}
+            {/* Modal de Devolución - sin cambios */}
             {showDevolucion && (
                 <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
                     <div className="bg-white shadow-md p-6 rounded w-full max-w-sm">
