@@ -28,7 +28,7 @@ const Inicio = () => {
                         if (!p.perishable || !p.expirationDate) return false;
                         const fechaCaducidad = new Date(p.expirationDate);
                         const diffDays = Math.ceil((fechaCaducidad - new Date()) / (1000 * 60 * 60 * 24));
-                        return diffDays > 0 && diffDays <= 7;
+                        return diffDays > 0 && diffDays <= 5;
                     }).length
                 );
                 setValorInventario(

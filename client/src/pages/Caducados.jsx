@@ -31,7 +31,7 @@ const Caducados = ({ productos: productosIniciales = [] }) => {
         if (!producto.perishable || !producto.expirationDate) return false;
         const fechaCaducidad = new Date(producto.expirationDate);
         const diffDays = Math.ceil((fechaCaducidad - today) / (1000 * 60 * 60 * 24));
-        return diffDays > 0 && diffDays <= 3;
+        return diffDays > 0 && diffDays <= 5;
     });
 
     const caducados = productos.filter((producto) => {
