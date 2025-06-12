@@ -5,7 +5,8 @@ import DetallesProductoModal from "./DetallesProductoModal";
 const ListaProductos = ({ productos, searchTerm, onEdit, onDelete, proveedores = [], proveedor = null }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productoVer, setProductoVer] = useState(null);
-  const productsPerPage = 10;
+  const productsPerPage = 13; // Número de productos por página
+  // Asegurarse de que productos es un array
 
   // Función para obtener el nombre del proveedor
   const getProveedorNombre = (providerId) => {
@@ -129,7 +130,7 @@ const ListaProductos = ({ productos, searchTerm, onEdit, onDelete, proveedores =
         </table>
       </div>
 
-      {/* Modal ver producto ahora usa el componente común */}
+      {/* Modal ver producto */}
       {productoVer && (
         <DetallesProductoModal
           producto={productoVer}

@@ -15,6 +15,7 @@ db = client["inventory_db"]  # Nombre de la base de datos
 products_collection = db["products"]  # Colección de productos
 providers_collection = db["providers"]  # Colección de proveedores
 ventas_collection = db["ventas"]  # Colección de ventas
+devoluciones_collection = db["devoluciones"]  # Añade esta línea después de ventas_collection
 
 # Configurar el registro
 logging.basicConfig(level=logging.DEBUG)
@@ -159,6 +160,22 @@ def guardar_venta():
     data["fecha"]= data.get("fecha") or None
     ventas_collection.insert_one(data)
     return jsonify({"message": "Venta registrada exitosamente"}), 201
+
+# Ruta para registrar una devolución
+@app.route("/devoluciones", methods=["POST"])
+def registrar_devolucion():
+    data = request.json
+    # Espera: id, nombre, unidades, importe, motivo, fecha
+    devolucion = {
+        "producto_id": data.get("producto_id"),
+        "producto_nombre": data.get("producto_nombre"),
+        "unidades": data.get("unidades"),
+        "importe_total": data.get("importe_total"),
+        "motivo": data.get("motivo", "desconocido"),
+        "fecha": data.get("fecha")
+    }
+    devoluciones_collection.insert_one(devolucion)
+    return jsonify({"message": "Devolución registrada exitosamente"}), 201
 
 if __name__ == "__main__":
     app.run(debug=True)

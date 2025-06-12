@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaBoxes, FaShoppingCart, FaGithub, FaLinkedin, FaEnvelope, FaPhone } from "react-icons/fa";
+import { FaBoxes, FaShoppingCart, FaEnvelope } from "react-icons/fa";
 import logo from "../assets/logo.png";
 
 const Home = () => {
@@ -41,6 +41,7 @@ const Home = () => {
                                 <p className="mb-6 text-gray-600">
                                     Gestione su inventario, añada nuevos productos y controle existencias
                                 </p>
+
                                 <button
                                     onClick={() => navigate("/inicio")}
                                     className="bg-blue-600 hover:bg-blue-700 focus:ring-opacity-50 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full font-medium text-white transition duration-300"
@@ -72,55 +73,50 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                </main>
-            </div>
-
-            {/* Footer que ocupa todo el ancho de la pantalla */}
-            <footer className="right-0 bottom-0 left-0 z-10 fixed bg-gray-600 py-6 w-full text-white">
-                <div className="mx-auto px-4 max-w-5xl">
-                    <div className="gap-6 grid grid-cols-2 md:grid-cols-4">
-                        {/* Sección de navegación */}
-                        <div>
-                            <h3 className="mb-2 font-semibold">Navegación</h3>
-                            <ul className="space-y-1">
-                                <li><button onClick={() => navigate("/")} className="text-gray-400 hover:text-white transition">Inicio</button></li>
-                            </ul>
+                </main >
+                {/* Footer SIEMPRE al final, nunca tapa contenido */}
+                < footer className="bg-gray-600 py-6 w-full text-white" >
+                    <div className="mx-auto px-4 max-w-5xl">
+                        <div className="gap-6 grid grid-cols-2 md:grid-cols-4">
+                            {/* Sección de navegación */}
+                            <div>
+                                <h3 className="mb-2 font-semibold">Navegación</h3>
+                                <ul className="space-y-1">
+                                    <li><button onClick={() => navigate("/")} className="text-gray-400 hover:text-white transition">Inicio</button></li>
+                                </ul>
+                            </div>
+                            {/* Gestión */}
+                            <div>
+                                <h3 className="mb-2 font-semibold">Gestión</h3>
+                                <ul className="space-y-1">
+                                    <li><button onClick={() => navigate("/ventas")} className="text-gray-400 hover:text-white transition">Ventas</button></li>
+                                </ul>
+                            </div>
+                            {/* Ayuda */}
+                            <div>
+                                <h3 className="mb-2 font-semibold">Ayuda</h3>
+                                <ul className="space-y-1">
+                                    <li><button onClick={() => navigate("/manual")} className="text-gray-400 hover:text-white transition">Manual de Usuario</button></li>
+                                </ul>
+                            </div>
+                            {/* Acerca de */}
+                            <div>
+                                <h3 className="mb-2 font-semibold">StockAgile</h3>
+                                <p className="text-gray-400 text-sm">
+                                    Sistema integrado de gestión de inventario y punto de venta
+                                </p>
+                            </div>
                         </div>
-
-                        {/* Gestión */}
-                        <div>
-                            <h3 className="mb-2 font-semibold">Gestión</h3>
-                            <ul className="space-y-1">
-                                <li><button onClick={() => navigate("/ventas")} className="text-gray-400 hover:text-white transition">Ventas</button></li>
-                            </ul>
-                        </div>
-
-                        {/* Ayuda */}
-                        <div>
-                            <h3 className="mb-2 font-semibold">Ayuda</h3>
-                            <ul className="space-y-1">
-                                <li><button onClick={() => navigate("/manual")} className="text-gray-400 hover:text-white transition">Manual de Usuario</button></li>
-                            </ul>
-                        </div>
-
-                        {/* Acerca de */}
-                        <div>
-                            <h3 className="mb-2 font-semibold">StockAgile</h3>
-                            <p className="text-gray-400 text-sm">
-                                Sistema integrado de gestión de inventario y punto de venta
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="flex md:flex-row flex-col justify-between items-center mt-6 pt-4 border-gray-700 border-t text-sm">
-                        <p className="text-gray-400">© {new Date().getFullYear()} StockAgile</p>
-                        <div className="flex items-center space-x-4 mt-2 md:mt-0">
-                            <FaEnvelope className="text-gray-400" />
-                            <span className="text-gray-400">soporte@stockagile.com</span>
+                        <div className="flex md:flex-row flex-col justify-between items-center mt-6 pt-4 border-gray-700 border-t text-sm">
+                            <p className="text-gray-400">© {new Date().getFullYear()} StockAgile</p>
+                            <div className="flex items-center space-x-4 mt-2 md:mt-0">
+                                <FaEnvelope className="text-gray-400" />
+                                <span className="text-gray-400">soporte@stockagile.com</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </footer>
+                </footer >
+            </div >
         </>
     );
 };
