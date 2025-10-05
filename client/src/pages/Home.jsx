@@ -39,7 +39,7 @@ const Home = () => {
                                     <h2 className="font-bold text-gray-800 text-2xl">Control de Stock</h2>
                                 </div>
                                 <p className="mb-6 text-gray-600">
-                                    Gestione su inventario, añada nuevos productos y controle existencias
+                                    Gestione su inventario, productos y proveedores
                                 </p>
 
                                 <button

@@ -28,13 +28,13 @@ const Caducados = ({ productos: productosIniciales = [] }) => {
         if (!producto.perishable || !producto.expirationDate) return false;
         const fechaCaducidad = new Date(producto.expirationDate);
         const diffDays = Math.ceil((fechaCaducidad - today) / (1000 * 60 * 60 * 24));
-        return diffDays > 0 && diffDays <= 5;
+        return diffDays > 0 && diffDays <= 4; // Filtramos productos que caducan en los próximos 4 días
     });
 
     const caducados = productos.filter((producto) => {
         if (!producto.perishable || !producto.expirationDate) return false;
         const fechaCaducidad = new Date(producto.expirationDate);
-        return fechaCaducidad < today;
+        return fechaCaducidad < today; // Filtramos productos que ya han caducado
     });
 
     const toggleForm = (productId) => {
@@ -58,7 +58,7 @@ const Caducados = ({ productos: productosIniciales = [] }) => {
 
     // Función para manejar la actualización del inventario
     const handleInventoryUpdate = (productoActualizado) => {
-        console.log("Inventory updated from Caducados page.", productoActualizado);
+        console.log("Inventario actualizado.", productoActualizado);
 
         // Si el producto actualizado es válido, actualízalo en el estado
         if (productoActualizado && productoActualizado.id) {
@@ -89,7 +89,7 @@ const Caducados = ({ productos: productosIniciales = [] }) => {
             <h1 className="flex gap-2 mb-6 font-bold text-gray-800 text-3xl">
                 <FaCalendarAlt /> Control de Caducidad
             </h1>
-
+            a
             <div className="flex justify-between items-center mb-4">
                 <div className="flex space-x-4">
                     <button
