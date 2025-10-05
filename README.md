@@ -7,22 +7,22 @@ StockAgile es una aplicación web para la gestión de inventario y ventas, dise�
 ## 📸 Capturas de pantalla
 
 ### Página principal
-![Página principal](screenshots/Captura1.png)
+![Página principal](./screenshots/Captura1.png)
 
 ### Panel de control
-![Panel de control](screenshots/Captura.png)
+![Panel de control](./screenshots/Captura.png)
 
 ### Punto de venta
-![Punto de venta](screenshots/Captura2.png)
+![Punto de venta](./screenshots/Captura2.png)
 
 ### Gestión de productos
-![Gestión de productos](screenshots/Captura3.png)
+![Gestión de productos](./screenshots/Captura3.png)
 
 ### Gestión de devolución
-![Gestión de devolución](screenshots/Captura4.png)
+![Gestión de devolución](./screenshots/Captura4.png)
 
 ### Gestión de inventario
-![Gestión de inventario](screenshots/Captura5.png)
+![Gestión de inventario](./screenshots/Captura5.png)
 
 ---
 
