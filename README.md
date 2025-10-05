@@ -1,6 +1,28 @@
 # StockAgile - Sistema de Gestión de Inventario y Punto de Venta
 
-StockAgile es una aplicación web para la gestión de inventario y ventas, diseñada para pequeñas y medianas empresas. Permite controlar productos, proveedores, ventas, alertas de stock, caducidad y mucho más, todo desde una interfaz moderna y fácil de usar.
+StockAgile es una aplicación web para la gestión de inventario y ventas, diseñada para pequeñas y medianas empresas.
+
+---
+
+## 📸 Capturas de pantalla
+
+### Página principal
+![Página principal](screenshots/captura1.png)
+
+### Panel de control
+![Panel de control](screenshots/captura.png)
+
+### Punto de venta
+![Punto de venta](screenshots/captura2.png)
+
+### Gestión de productos
+![Gestión de productos](screenshots/captura3.png)
+
+### Gestión de devolución
+![Gestión de devolución](screenshots/captura4.png)
+
+### Gestión de inventario
+![Gestión de inventario](screenshots/captura5.png)
 
 ---
 
